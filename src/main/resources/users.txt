@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 asdasdasd;dafaf;adasfadsg;gsdgsd
 kunia;asdf;michal;makowski;
 kunia;asdf;michal ;makowski;
@@ -31,3 +32,5 @@ rty;wwer;sdfsdf;gsgs;
 qwerty;yuma;dama;wama;sama;
 zaq;zaq;zaq;zaq;
 ui;ki;mi;di;
+=======
+>>>>>>> 75d1531255b0fbd085b42edac122da3de4e6d201
