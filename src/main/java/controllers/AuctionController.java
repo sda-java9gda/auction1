@@ -20,7 +20,7 @@ public class AuctionController {
         setAuctionDescription();
         auction.setSettingUser(this.user);
 
-        auctionMap.put(auction.getId(),this.auction);
+        auctionMap.put(auction.getId(),auction);
         Integer tmp =auction.getId();
         auction.setId(tmp++);
     }

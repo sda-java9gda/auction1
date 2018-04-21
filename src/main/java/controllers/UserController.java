@@ -12,9 +12,6 @@ public class UserController {
     public boolean addUser() {
         user = new User();
         setUserLogin();
-        while (checkUserExist(user.getLogin())) {
-            setUserLogin();
-        }
         setUserName();
         setUserSurname();
         FileController.writeToUsersFile();
@@ -38,12 +35,14 @@ public class UserController {
     public void setUserLogin() {
         UserView.giveLogin();
         String login = sc.nextLine();
-        if (checkUserExist(login)) {
-        } else {
-            user.setLogin(login);
-            FileController.writeToUsersFile(login);
-            setUserPassword();
+        while (checkUserExist(login)) {
+            UserView.userExist();
+            login = sc.nextLine();
         }
+        FileController.writeToUsersFile(login);
+        user.setLogin(login);
+        setUserPassword();
+
     }
 
     public void setUserPassword() {
@@ -55,11 +54,7 @@ public class UserController {
 
     public boolean checkUserExist(String login) {
         if (FileController.checkIfLoginPresent(login)) {
-            UserView.userExist();
             return true;
-        } else {
-            user.setName(login);
-            return false;
-        }
+        } else return false;
     }
 }
