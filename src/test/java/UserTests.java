@@ -1,7 +1,6 @@
 import models.User;
 import org.junit.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 public class UserTests {
 
