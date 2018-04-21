@@ -18,17 +18,18 @@ public class UserController {
         Scanner sc = new Scanner(System.in);
         user = new User();
         userList.add(user);
-        System.out.println("Podaj imię :");
+        UserView.giveName();
         user.setName(sc.nextLine());
-        System.out.println("Podaj nazwisko :");
+        UserView.giveSurname();
         user.setSurname(sc.nextLine());
-        System.out.println("Podaj login :");
+
+        UserView.giveLogin();
         String login =sc.nextLine();
         if(checkUserExist(login)==true){
             return false;
         }else {
             checkUserExist(login);
-            System.out.println("Podaj haslo :");
+            UserView.givePassword();
             user.setPassword(sc.nextLine());
             return true;
         }
@@ -42,6 +43,8 @@ public class UserController {
             user.setName(login);
             return false;
         }
+        
+
     }
 
 
