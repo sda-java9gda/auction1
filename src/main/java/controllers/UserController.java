@@ -29,13 +29,17 @@ public class UserController {
     }
 
     public void giveUserName() {
+        String name = sc.nextLine();
         UserView.giveName();
-        user.setName(sc.nextLine());
+        user.setName(name);
+        FileController.writeToUsersFile(name);
     }
 
     public void giveUserSurname() {
+        String surname = sc.nextLine();
         UserView.giveSurname();
-        user.setSurname(sc.nextLine());
+        user.setSurname(surname);
+        FileController.writeToUsersFile(surname);
     }
 
     public void giveUserLogin() {
@@ -49,11 +53,14 @@ public class UserController {
             giveUserPassword();
 
         }
+        FileController.writeToUsersFile(login);
     }
 
     public void giveUserPassword() {
+        String password = sc.nextLine();
         UserView.givePassword();
-        user.setPassword(sc.nextLine());
+        user.setPassword(password);
+        FileController.writeToUsersFile(password);
     }
 
 
