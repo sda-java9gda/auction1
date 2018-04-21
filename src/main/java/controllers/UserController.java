@@ -52,9 +52,9 @@ public class UserController {
         } else {
             user.setLogin(login);
             giveUserPassword();
+            FileController.writeToUsersFile(login);
             return false;
         }
-        FileController.writeToUsersFile(login);
     }
 
     public void giveUserPassword() {
