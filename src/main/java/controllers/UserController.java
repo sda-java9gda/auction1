@@ -14,30 +14,30 @@ public class UserController {
     Scanner sc = new Scanner(System.in);
     boolean addUserComplete = true;
 
-    private List<User> userList = new ArrayList<User>();
+    private List<User> userList = new ArrayList<>();
 
     public boolean addUser() {
         while (addUserComplete == true) {
             user = new User();
-            giveUserName();
-            giveUserSurname();
-            giveUserLogin();
+            setUserName();
+            setUserSurname();
+            setUserLogin();
         }
         userList.add(user);
         return addUserComplete;
     }
 
-    public void giveUserName() {
+    public void setUserName() {
         UserView.giveName();
         user.setName(sc.nextLine());
     }
 
-    public void giveUserSurname() {
+    public void setUserSurname() {
         UserView.giveSurname();
         user.setSurname(sc.nextLine());
     }
 
-    public void giveUserLogin() {
+    public void setUserLogin() {
         UserView.giveLogin();
         String login = sc.nextLine();
         if (checkUserExist(login)) {
@@ -45,12 +45,12 @@ public class UserController {
 
         } else {
             user.setLogin(login);
-            giveUserPassword();
+            setUserPassword();
 
         }
     }
 
-    public void giveUserPassword() {
+    public void setUserPassword() {
         UserView.givePassword();
         user.setPassword(sc.nextLine());
     }
@@ -92,5 +92,13 @@ public class UserController {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public List<User> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
     }
 }
