@@ -3,8 +3,6 @@ package controllers;
 import models.User;
 import views.UserView;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -12,47 +10,54 @@ import java.util.Scanner;
 public class UserController {
     User user;
     Scanner sc = new Scanner(System.in);
-    boolean addUserComplete = true;
 
     private List<User> userList = new ArrayList<>();
 
     public boolean addUser() {
-        while (addUserComplete == true) {
-            user = new User();
-            setUserName();
-            setUserSurname();
+        user = new User();
+        
+        while (setUserLogin()) {
             setUserLogin();
         }
+        setUserName();
+        setUserSurname();
         userList.add(user);
-        return addUserComplete;
+        return true;
     }
 
     public void setUserName() {
+        String name = sc.nextLine();
         UserView.giveName();
-        user.setName(sc.nextLine());
+        user.setName(name);
+        FileController.writeToUsersFile(name);
     }
 
     public void setUserSurname() {
+        String surname = sc.nextLine();
         UserView.giveSurname();
-        user.setSurname(sc.nextLine());
+        user.setSurname(surname);
+        FileController.writeToUsersFile(surname);
     }
 
-    public void setUserLogin() {
+    public boolean setUserLogin() {
+
         UserView.giveLogin();
         String login = sc.nextLine();
         if (checkUserExist(login)) {
-            addUserComplete = false;
-
+            return true;
         } else {
             user.setLogin(login);
             setUserPassword();
-
+            FileController.writeToUsersFile(login);
+            return false;
         }
     }
 
     public void setUserPassword() {
+        String password = sc.nextLine();
         UserView.givePassword();
-        user.setPassword(sc.nextLine());
+        user.setPassword(password);
+        FileController.writeToUsersFile(password);
     }
 
 
@@ -67,31 +72,6 @@ public class UserController {
             }
         }
         return false;
-    }
-
-
-    //    public User getUserFromFileByLogin(List<String> list, User user){
-//        readFromFile()
-//        for (String lists: list) {
-//            if(user.getLogin().toLowerCase().equals(lists)){
-//                return user;
-//            }
-//        }
-//    }
-
-    public List<String> readFromFile(String fileName) {
-        List<String> list = new ArrayList<String>();
-        File file = new File(fileName);
-        Scanner scanner = null;
-        try {
-            scanner = new Scanner(file);
-            while (scanner.hasNextLine()) {
-                list.add(scanner.nextLine());
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return list;
     }
 
     public List<User> getUserList() {
