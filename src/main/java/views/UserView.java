@@ -46,11 +46,5 @@ public class UserView {
     }
 
 
-
-//    public static void printAllUsers(List<User> users){
-//        for (user : users) {
-//            System.out.println(user);
-//
-//        }
-
 }
+
