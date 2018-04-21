@@ -1,6 +1,7 @@
 package controllers;
 
 import models.User;
+import views.UserView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,19 +18,14 @@ public class UserController {
         Scanner sc = new Scanner(System.in);
         user = new User();
         userList.add(user);
-        System.out.println("Podaj imię :");
+        UserView.giveName();
         user.setName(sc.nextLine());
-        System.out.println("Podaj nazwisko :");
+        UserView.giveSurname();
         user.setSurname(sc.nextLine());
-        System.out.println("Podaj login :");
-        String login = sc.nextLine();
-//        if (login.equals()) {
-//            System.out.println("Login jest zajety");
-//            return false;
-//        } else {
-//            user.setLogin(login);
-//            System.out.println("Podaj haslo :");
-//            user.setPassword(sc.nextLine());
+        UserView.giveLogin();
+        user.setLogin(sc.nextLine());
+        UserView.givePassword();
+        user.setPassword(sc.nextLine());
         return true;
     }
 
