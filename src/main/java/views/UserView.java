@@ -1,7 +1,10 @@
 package views;
 
 
+import controllers.UserController;
 import models.User;
+
+import java.util.List;
 
 
 public class UserView {
@@ -18,9 +21,10 @@ public class UserView {
         System.out.println("Witaj " + user.getLogin());
     }
 
-//    public static void printAllUsers(List<User> users){
-//        for (user : users) {
-//            System.out.println(user);
-//
-//        }
+    public static void printAllUsers(List<User> users) {
+
+        for (User user : users) {
+            System.out.println(user.getLogin());
+        }
+    }
 }
