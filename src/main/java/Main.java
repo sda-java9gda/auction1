@@ -1,3 +1,7 @@
+import controllers.AuctionController;
+import controllers.UserController;
+import views.AuctionView;
+
 import java.util.Scanner;
 
 public class Main {
@@ -12,11 +16,12 @@ public class Main {
     public static void main(String[] args) {
         State state = State.INIT;
         Scanner sc = new Scanner(System.in);
+        System.out.println("Welcome to SDAllegro!");
 
         while (state != State.EXIT) {
             switch (state) {
                 case INIT:
-                    System.out.println("Welcome to SDAllegro! Pick one:");
+                    System.out.println("Pick one:");
                     System.out.println("1 - Log in");
                     System.out.println("2 - Register");
                     System.out.println("0 - Quit");
@@ -25,11 +30,11 @@ public class Main {
 
                     switch (answer) {
                         case ("1"):
-                            state = State.REGISTER;
+                            state = State.LOGGING_IN;
                             break;
 
                         case ("2"):
-                            state = State.LOGGING_IN;
+                            state = State.REGISTER;
                             break;
 
                         case ("0"):
@@ -44,7 +49,10 @@ public class Main {
                     break;
 
                 case REGISTER: {
-
+                    UserController uc = new UserController();
+                    uc.addUser();
+                    state = State.INIT;
+                    break;
                 }
 
                 case LOGGING_IN: {
@@ -54,14 +62,54 @@ public class Main {
                     System.out.println("Input password");
                     String password = sc.nextLine();
 
-                    if (true) {
+
+                    if (UserController.verify(login, password)) {
                         state = State.LOGGED_IN;
                     } else {
                         state = State.INIT;
                     }
                     break;
                 }
+
+                case LOGGED_IN: {
+                    System.out.println("1 - View all auctions");
+                    System.out.println("2 - Take a bid");
+                    System.out.println("3 - Create an auction");
+                    System.out.println("0 - Quit");
+
+                    answer = sc.nextLine();
+
+                    switch (answer) {
+                        case ("1"):
+                            AuctionView.viewAllAuctions();
+                            state = State.LOGGED_IN;
+                            break;
+
+                        case ("2"):
+                            //TODO
+                            state = State.LOGGED_IN;
+                            break;
+
+                        case ("3"):
+                            AuctionController ac = new AuctionController();
+                            ac.addAuction();
+                            state = State.LOGGED_IN;
+                            break;
+
+                        case ("0"):
+                            state = State.EXIT;
+                            break;
+
+                        default:
+                            System.out.println("Wrong answer!");
+                            state = State.INIT;
+                            break;
+                    }
+                    break;
+                }
             }
         }
     }
+
+
 }

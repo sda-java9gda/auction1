@@ -57,4 +57,9 @@ public class UserController {
             return true;
         } else return false;
     }
+
+    public static boolean verify(String login, String password) {
+        //TODO
+        return true;
+    }
 }

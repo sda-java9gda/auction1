@@ -12,7 +12,7 @@ public class AuctionController {
     private Auction auction;
     private User user;
     private Scanner sc = new Scanner(System.in);
-    private Map<Integer,Auction> auctionMap = new HashMap<>();
+    private static Map<Integer,Auction> auctionMap = new HashMap<>();
 
     public void addAuction(){
         auction = new Auction();
@@ -35,5 +35,9 @@ public class AuctionController {
         String name = sc.nextLine();
         AuctionView.giveAuctionName();
         auction.setName(name);
+    }
+
+    public static Map<Integer, Auction> getAuctionMap() {
+        return auctionMap;
     }
 }

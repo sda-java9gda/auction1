@@ -64,4 +64,16 @@ public class Auction {
     public void setNumberOfBiddings(int numberOfBiddings) {
         this.numberOfBiddings = numberOfBiddings;
     }
+
+    @Override
+    public String toString() {
+        return "Auction{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", settingUser=" + settingUser +
+                ", biddingUser=" + biddingUser +
+                ", numberOfBiddings=" + numberOfBiddings +
+                ", id=" + id +
+                '}';
+    }
 }
