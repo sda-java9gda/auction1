@@ -1,6 +1,7 @@
 package controllers;
 
 import models.User;
+import views.UserView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,16 +23,25 @@ public class UserController {
         System.out.println("Podaj nazwisko :");
         user.setSurname(sc.nextLine());
         System.out.println("Podaj login :");
-        String login = sc.nextLine();
+        String login =sc.nextLine();
+        if(checkUserExist(login)==true){
+            return false;
+        }else {
+            checkUserExist(login);
+            System.out.println("Podaj haslo :");
+            user.setPassword(sc.nextLine());
+            return true;
+        }
+    }
 
-//        if (login.equals()) {
-//            System.out.println("Login jest zajety");
-//            return false;
-//        } else {
-//            user.setLogin(login);
-//            System.out.println("Podaj haslo :");
-//            user.setPassword(sc.nextLine());
-        return true;
+    public boolean checkUserExist(String login) {
+        if (login.equals(userList)) {
+            UserView.userExist();
+            return true;
+        } else {
+            user.setName(login);
+            return false;
+        }
     }
 
 
@@ -44,13 +54,13 @@ public class UserController {
 //        }
 //    }
 
-    public List<String> readFromFile(String fileName){
+    public List<String> readFromFile(String fileName) {
         List<String> list = new ArrayList<String>();
         File file = new File(fileName);
         Scanner scanner = null;
         try {
             scanner = new Scanner(file);
-            while (scanner.hasNextLine()){
+            while (scanner.hasNextLine()) {
                 list.add(scanner.nextLine());
             }
         } catch (FileNotFoundException e) {
