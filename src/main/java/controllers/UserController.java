@@ -13,19 +13,20 @@ import java.util.Scanner;
 public class UserController {
     User user;
     Scanner sc = new Scanner(System.in);
-    boolean addUserComplete = true;
 
     private List<User> userList = new ArrayList<User>();
 
     public boolean addUser() {
-        while (addUserComplete == true) {
-            user = new User();
-            giveUserName();
-            giveUserSurname();
+        user = new User();
+        
+        while (giveUserLogin()) {
             giveUserLogin();
         }
+
+        giveUserName();
+        giveUserSurname();
         userList.add(user);
-        return addUserComplete;
+        return true;
     }
 
     public void giveUserName() {
@@ -42,16 +43,16 @@ public class UserController {
         FileController.writeToUsersFile(surname);
     }
 
-    public void giveUserLogin() {
+    public boolean giveUserLogin() {
         UserView.giveLogin();
         String login = sc.nextLine();
         if (checkUserExist(login)) {
-            addUserComplete = false;
+            return true;
 
         } else {
             user.setLogin(login);
             giveUserPassword();
-
+            return false;
         }
         FileController.writeToUsersFile(login);
     }
@@ -78,27 +79,4 @@ public class UserController {
     }
 
 
-    //    public User getUserFromFileByLogin(List<String> list, User user){
-//        readFromFile()
-//        for (String lists: list) {
-//            if(user.getLogin().toLowerCase().equals(lists)){
-//                return user;
-//            }
-//        }
-//    }
-
-    public List<String> readFromFile(String fileName) {
-        List<String> list = new ArrayList<String>();
-        File file = new File(fileName);
-        Scanner scanner = null;
-        try {
-            scanner = new Scanner(file);
-            while (scanner.hasNextLine()) {
-                list.add(scanner.nextLine());
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
 }
