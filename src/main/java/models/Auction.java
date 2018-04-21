@@ -6,6 +6,15 @@ public class Auction {
     private User settingUser;
     private User biddingUser;
     private int numberOfBiddings = 0;
+    private Integer id = 1;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Auction() {
     }
