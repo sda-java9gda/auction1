@@ -15,37 +15,47 @@ public class UserController {
     private List<User> userList = new ArrayList<User>();
 
     public boolean addUser() {
-        Scanner sc = new Scanner(System.in);
-        user = new User();
-        userList.add(user);
-        UserView.giveName();
-        user.setName(sc.nextLine());
-        UserView.giveSurname();
-        user.setSurname(sc.nextLine());
+        boolean addUserComplete = true;
+        while (addUserComplete) {
 
-        UserView.giveLogin();
-        String login = sc.nextLine();
-        if (checkUserExist(login)) {
-            return false;
-        } else {
-            checkUserExist(login);
-            UserView.givePassword();
-            user.setPassword(sc.nextLine());
-            return true;
+            Scanner sc = new Scanner(System.in);
+            user = new User();
+            userList.add(user);
+            UserView.giveName();
+            user.setName(sc.nextLine());
+            UserView.giveSurname();
+            user.setSurname(sc.nextLine());
+            UserView.giveLogin();
+            String login = sc.nextLine();
+            if (checkUserExist(login)) {
+                addUserComplete = false;
+                return false;
+
+            } else {
+                checkUserExist(login);
+                UserView.givePassword();
+                user.setPassword(sc.nextLine());
+
+            }
         }
+        return true;
     }
 
     public boolean checkUserExist(String login) {
-        if (login.equals(userList)) {
-            UserView.userExist();
-            return true;
-        } else {
-            user.setName(login);
-            return false;
+        for (User user : userList) {
+            if (user.getLogin().equals(login)) {
+                UserView.userExist();
+                return true;
+            } else {
+                user.setName(login);
+                return false;
+            }
         }
+        return false;
     }
 
-//    public User getUserFromFileByLogin(List<String> list, User user){
+
+    //    public User getUserFromFileByLogin(List<String> list, User user){
 //        readFromFile()
 //        for (String lists: list) {
 //            if(user.getLogin().toLowerCase().equals(lists)){
