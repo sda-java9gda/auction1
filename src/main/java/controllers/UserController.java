@@ -22,11 +22,29 @@ public class UserController {
         user.setName(sc.nextLine());
         UserView.giveSurname();
         user.setSurname(sc.nextLine());
+
         UserView.giveLogin();
-        user.setLogin(sc.nextLine());
-        UserView.givePassword();
-        user.setPassword(sc.nextLine());
-        return true;
+        String login =sc.nextLine();
+        if(checkUserExist(login)==true){
+            return false;
+        }else {
+            checkUserExist(login);
+            UserView.givePassword();
+            user.setPassword(sc.nextLine());
+            return true;
+        }
+    }
+
+    public boolean checkUserExist(String login) {
+        if (login.equals(userList)) {
+            UserView.userExist();
+            return true;
+        } else {
+            user.setName(login);
+            return false;
+        }
+        
+
     }
 
 
@@ -39,13 +57,13 @@ public class UserController {
 //        }
 //    }
 
-    public List<String> readFromFile(String fileName){
+    public List<String> readFromFile(String fileName) {
         List<String> list = new ArrayList<String>();
         File file = new File(fileName);
         Scanner scanner = null;
         try {
             scanner = new Scanner(file);
-            while (scanner.hasNextLine()){
+            while (scanner.hasNextLine()) {
                 list.add(scanner.nextLine());
             }
         } catch (FileNotFoundException e) {
