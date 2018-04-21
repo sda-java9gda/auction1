@@ -15,7 +15,7 @@ public class UserController {
 
     public boolean addUser() {
         user = new User();
-        
+
         while (setUserLogin()) {
             setUserLogin();
         }
@@ -26,15 +26,15 @@ public class UserController {
     }
 
     public void setUserName() {
-        String name = sc.nextLine();
         UserView.giveName();
+        String name = sc.nextLine();
         user.setName(name);
         FileController.writeToUsersFile(name);
     }
 
     public void setUserSurname() {
-        String surname = sc.nextLine();
         UserView.giveSurname();
+        String surname = sc.nextLine();
         user.setSurname(surname);
         FileController.writeToUsersFile(surname);
     }
@@ -47,15 +47,15 @@ public class UserController {
             return true;
         } else {
             user.setLogin(login);
-            setUserPassword();
             FileController.writeToUsersFile(login);
+            setUserPassword();
             return false;
         }
     }
 
     public void setUserPassword() {
-        String password = sc.nextLine();
         UserView.givePassword();
+        String password = sc.nextLine();
         user.setPassword(password);
         FileController.writeToUsersFile(password);
     }
