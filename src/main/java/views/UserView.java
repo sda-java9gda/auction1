@@ -1,6 +1,6 @@
 package views;
 
-import model.User;
+import models.User;
 
 public class UserView {
 

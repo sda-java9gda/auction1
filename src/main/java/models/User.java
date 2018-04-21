@@ -1,4 +1,4 @@
-package model;
+package models;
 
 public class User {
     private String name;
@@ -7,16 +7,7 @@ public class User {
     private String password;
 
     public User() {
-<<<<<<< HEAD:src/main/java/model/User.java
-    }
 
-    public User(String name, String surname, String login, String password) {
-        this.name = name;
-        this.surname = surname;
-        this.login = login;
-        this.password = password;
-=======
->>>>>>> 7767946ee85bc4a1d31fae2ed2eaf3fc7f9118b4:src/main/java/model/User.java
     }
 
     public String getName() {
