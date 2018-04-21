@@ -1,5 +1,7 @@
 package controllers;
 
+import views.UserView;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -18,12 +20,23 @@ public class FileController {
             e.printStackTrace();
         }
     }
-    public static List<String> readFromFile(String fileName) {
+    public static boolean checkIfLoginPresent(String string){
+        List<String> stringFile = readFromFile(users);
+        for (String lines: stringFile) {
+            if (lines.equals(string)) {
+                return true;
+            } else
+                return false;
+        }
+        return false;
+
+        }
+
+    public static List<String> readFromFile(File fileName) {
         List<String> list = new ArrayList<String>();
-        File file = new File(fileName);
         Scanner scanner = null;
         try {
-            scanner = new Scanner(file);
+            scanner = new Scanner(users);
             while (scanner.hasNextLine()) {
                 list.add(scanner.nextLine());
             }

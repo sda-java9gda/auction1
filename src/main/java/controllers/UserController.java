@@ -15,7 +15,7 @@ public class UserController {
 
     public boolean addUser() {
         user = new User();
-        
+
         while (setUserLogin()) {
             setUserLogin();
         }
@@ -62,16 +62,25 @@ public class UserController {
 
 
     public boolean checkUserExist(String login) {
-        for (User user : userList) {
-            if (user.getLogin().equals(login)) {
-                UserView.userExist();
-                return true;
-            } else {
-                user.setName(login);
-                return false;
-            }
+        if (FileController.checkIfLoginPresent(login)) {
+            UserView.userExist();
+            return true;
+        } else {
+            user.setName(login);
+            return false;
         }
-        return false;
+
+        //Sprawdzenie z userList
+//        for (User user : userList) {
+//            if (user.getLogin().equals(login)) {
+//                UserView.userExist();
+//                return true;
+//            } else {
+//                user.setName(login);
+//                return false;
+//            }
+//        }
+//        return false;
     }
 
     public List<User> getUserList() {
