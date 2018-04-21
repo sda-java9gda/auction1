@@ -24,10 +24,10 @@ public class UserController {
         user.setSurname(sc.nextLine());
 
         UserView.giveLogin();
-        String login =sc.nextLine();
-        if(checkUserExist(login)==true){
+        String login = sc.nextLine();
+        if (checkUserExist(login)) {
             return false;
-        }else {
+        } else {
             checkUserExist(login);
             UserView.givePassword();
             user.setPassword(sc.nextLine());
@@ -43,10 +43,7 @@ public class UserController {
             user.setName(login);
             return false;
         }
-        
-
     }
-
 
 //    public User getUserFromFileByLogin(List<String> list, User user){
 //        readFromFile()
