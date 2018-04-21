@@ -11,40 +11,56 @@ import java.util.Scanner;
 
 public class UserController {
     User user;
+    Scanner sc = new Scanner(System.in);
+    boolean addUserComplete = true;
 
     private List<User> userList = new ArrayList<User>();
 
     public boolean addUser() {
-        boolean addUserComplete = true;
+
 
         while (addUserComplete == true) {
-
-            Scanner sc = new Scanner(System.in);
             user = new User();
-            userList.add(user);
-            UserView.giveName();
-            user.setName(sc.nextLine());
-            UserView.giveSurname();
-            user.setSurname(sc.nextLine());
-            UserView.giveLogin();
-            String login = sc.nextLine();
-            if (checkUserExist(login) == true) {
-                addUserComplete = false;
-                return false;
-
-            } else {
-                checkUserExist(login);
-                UserView.givePassword();
-                user.setPassword(sc.nextLine());
-
-            }
+            giveUserName();
+            giveUserSurname();
+            giveUserLogin();
         }
-        return true;
+        userList.add(user);
+        return addUserComplete;
     }
+
+    public void giveUserName(){
+        UserView.giveName();
+        user.setName(sc.nextLine());
+    }
+    public void giveUserSurname(){
+        UserView.giveSurname();
+        user.setSurname(sc.nextLine());
+    }
+
+    public void giveUserLogin(){
+        UserView.giveLogin();
+        String login = sc.nextLine();
+        if (checkUserExist(login) == true) {
+            addUserComplete = false;
+
+        } else {
+            user.setLogin(login);
+            GiveUserPassword();
+
+        }
+    }
+
+    public void GiveUserPassword(){
+        UserView.givePassword();
+        user.setPassword(sc.nextLine());
+    }
+
 
     public boolean checkUserExist(String login) {
         if (login.equals(userList)) {
             UserView.userExist();
+
             return true;
         } else {
             user.setName(login);
