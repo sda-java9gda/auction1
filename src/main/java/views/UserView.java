@@ -22,7 +22,9 @@ public class UserView {
     }
 
 
-    public static void userExist(){        System.out.println("Login jest zajety!"); }
+    public static void userExist(){
+        System.out.println("Login jest zajety!");
+    }
 
 
     public static void printAllUsers(List<User> users) {

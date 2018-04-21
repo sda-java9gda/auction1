@@ -17,14 +17,15 @@ public class UserController {
     private List<User> userList = new ArrayList<User>();
 
     public boolean addUser() {
-        while (addUserComplete == true) {
-            user = new User();
-            giveUserName();
-            giveUserSurname();
+        user = new User();
+        while (giveUserLogin()) {
             giveUserLogin();
+            UserView.userExist();
         }
+        giveUserName();
+        giveUserSurname();
         userList.add(user);
-        return addUserComplete;
+        return true;
     }
 
     public void giveUserName() {
@@ -37,16 +38,16 @@ public class UserController {
         user.setSurname(sc.nextLine());
     }
 
-    public void giveUserLogin() {
+    public boolean giveUserLogin() {
         UserView.giveLogin();
         String login = sc.nextLine();
         if (checkUserExist(login)) {
-            addUserComplete = false;
+            return true;
 
         } else {
             user.setLogin(login);
             giveUserPassword();
-
+            return false;
         }
     }
 
@@ -68,16 +69,6 @@ public class UserController {
         }
         return false;
     }
-
-
-    //    public User getUserFromFileByLogin(List<String> list, User user){
-//        readFromFile()
-//        for (String lists: list) {
-//            if(user.getLogin().toLowerCase().equals(lists)){
-//                return user;
-//            }
-//        }
-//    }
 
     public List<String> readFromFile(String fileName) {
         List<String> list = new ArrayList<String>();
