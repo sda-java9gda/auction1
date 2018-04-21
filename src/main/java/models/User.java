@@ -1,4 +1,4 @@
-package model;
+package models;
 
 public class User {
     private String name;
@@ -7,6 +7,7 @@ public class User {
     private String password;
 
     public User() {
+
     }
 
     public String getName() {
