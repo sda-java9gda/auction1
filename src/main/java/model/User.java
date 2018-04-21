@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 public class User {
     private String name;
@@ -6,11 +6,7 @@ public class User {
     private String login;
     private String password;
 
-    public User(String name, String surname, String login, String password) {
-        this.name = name;
-        this.surname = surname;
-        this.login = login;
-        this.password = password;
+    public User() {
     }
 
     public String getName() {
