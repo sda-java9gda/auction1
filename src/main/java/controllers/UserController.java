@@ -15,24 +15,31 @@ public class UserController {
     private List<User> userList = new ArrayList<User>();
 
     public boolean addUser() {
-        Scanner sc = new Scanner(System.in);
-        user = new User();
-        userList.add(user);
-        UserView.giveName();
-        user.setName(sc.nextLine());
-        UserView.giveSurname();
-        user.setSurname(sc.nextLine());
+        boolean addUserComplete = true;
 
-        UserView.giveLogin();
-        String login =sc.nextLine();
-        if(checkUserExist(login)==true){
-            return false;
-        }else {
-            checkUserExist(login);
-            UserView.givePassword();
-            user.setPassword(sc.nextLine());
-            return true;
+        while (addUserComplete == true) {
+
+            Scanner sc = new Scanner(System.in);
+            user = new User();
+            userList.add(user);
+            UserView.giveName();
+            user.setName(sc.nextLine());
+            UserView.giveSurname();
+            user.setSurname(sc.nextLine());
+            UserView.giveLogin();
+            String login = sc.nextLine();
+            if (checkUserExist(login) == true) {
+                addUserComplete = false;
+                return false;
+
+            } else {
+                checkUserExist(login);
+                UserView.givePassword();
+                user.setPassword(sc.nextLine());
+
+            }
         }
+        return true;
     }
 
     public boolean checkUserExist(String login) {
@@ -43,7 +50,7 @@ public class UserController {
             user.setName(login);
             return false;
         }
-        
+
 
     }
 
