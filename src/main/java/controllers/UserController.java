@@ -13,16 +13,16 @@ import java.util.Scanner;
 public class UserController {
     User user;
     Scanner sc = new Scanner(System.in);
-    boolean addUserComplete = true;
 
     private List<User> userList = new ArrayList<User>();
 
     public boolean addUser() {
         user = new User();
+        
         while (giveUserLogin()) {
             giveUserLogin();
-            UserView.userExist();
         }
+
         giveUserName();
         giveUserSurname();
         userList.add(user);
@@ -71,18 +71,5 @@ public class UserController {
         return false;
     }
 
-    public List<String> readFromFile(String fileName) {
-        List<String> list = new ArrayList<String>();
-        File file = new File(fileName);
-        Scanner scanner = null;
-        try {
-            scanner = new Scanner(file);
-            while (scanner.hasNextLine()) {
-                list.add(scanner.nextLine());
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
+
 }
