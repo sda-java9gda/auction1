@@ -1,6 +1,6 @@
 package views;
 
-import Model.User;
+
 import model.User;
 
 import java.util.List;
