@@ -20,20 +20,20 @@ public class UserControllerTests {
         this.user.setLogin(login);
     }
 
-    @Test
-    public void shouldBeFalseForAdam() {
-        boolean actual = uc.checkUserExist(login);
-
-        assertThat(actual).isFalse();
-    }
-
-    @Test
-    public void shouldBeTrueForAdam() {
-        User[] users = new User[]{user};
-        uc.setUserList(Arrays.asList(users));
-
-        boolean actual = uc.checkUserExist(login);
-
-        assertThat(actual).isTrue();
-    }
+//    @Test
+//    public void shouldBeFalseForAdam() {
+//        boolean actual = uc.checkUserExist(login);
+//
+//        assertThat(actual).isFalse();
+//    }
+//
+//    @Test
+//    public void shouldBeTrueForAdam() {
+//        User[] users = new User[]{user};
+//        uc.setUserList(Arrays.asList(users));
+//
+//        boolean actual = uc.checkUserExist(login);
+//
+//        assertThat(actual).isTrue();
+//    }
 }
