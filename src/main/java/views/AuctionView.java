@@ -8,11 +8,11 @@ import java.util.Map;
 public class AuctionView {
 
     public static void giveAuctionName() {
-        System.out.println("Podaj nazwe aukcjii.");
+        System.out.println("Enter auction name.");
     }
 
     public static void giveAuctionDescription() {
-        System.out.println("Podaj szczegoly aukcjii.");
+        System.out.println("Enter auction details.");
     }
 
     public static void viewAllAuctions() {

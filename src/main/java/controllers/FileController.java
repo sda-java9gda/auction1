@@ -4,21 +4,31 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 public class FileController {
     private static final String PATHNAME = "src/main/resources/";
     private static final String USERS_FILENAME = PATHNAME + "users.txt";
     private static final String SEPARATOR = ";";
 
-    public static void writeToUsersFile(String text) {
-        File file = new File(USERS_FILENAME);
-        try (PrintWriter writer = new PrintWriter(new FileOutputStream(file, true))) {
+
+//    public static void writeToUsersFile(String text) {
+//        File file = new File(USERS_FILENAME);
+//        try (PrintWriter writer = new PrintWriter(new FileOutputStream(file, true))) {
+//            writer.print(text + SEPARATOR);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+
+    public static void writeToUsersFile(String text, File filePath) {
+        try (PrintWriter writer = new PrintWriter(new FileOutputStream(filePath, true))) {
             writer.print(text + SEPARATOR);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
+
 
     public static void writeToUsersFile() {
         File file = new File(USERS_FILENAME);
