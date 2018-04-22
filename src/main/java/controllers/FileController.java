@@ -21,8 +21,9 @@ public class FileController {
 //    }
 
 
-    public static void writeToUsersFile(String text, File filePath) {
-        try (PrintWriter writer = new PrintWriter(new FileOutputStream(filePath, true))) {
+    public static void writeToUsersFile(String text, String filePath) {
+        File file = new File(filePath);
+        try (PrintWriter writer = new PrintWriter(new FileOutputStream(file, true))) {
             writer.print(text + SEPARATOR);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
