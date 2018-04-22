@@ -8,17 +8,6 @@ import java.util.List;
 
 public class UserView {
 
-<<<<<<< HEAD
-=======
-    public static void printUserName(User user) {
-        System.out.println("Your name is: " + user.getName());
-    }
-
-    public static void printUserSurname(User user) {
-        System.out.println("Your surname is: " + user.getSurname());
-    }
->>>>>>> dd2d02b3782f33590782f35885618c7af95f2eef
-
     public static void printUserLogin(User user) {
         System.out.println("Hello " + user.getLogin());
     }
@@ -33,14 +22,6 @@ public class UserView {
         for (User user : users) {
             System.out.println(user.getLogin());
         }
-    }
-
-    public static void giveName() {
-        System.out.println("Enter your name");
-    }
-
-    public static void giveSurname() {
-        System.out.println("Enter your surname");
     }
 
     public static void giveLogin() {
