@@ -1,5 +1,6 @@
 import controllers.AuctionController;
 import controllers.UserController;
+import models.Auction;
 import views.AuctionView;
 import views.UserView;
 
@@ -80,6 +81,7 @@ public class Main {
                 }
 
                 case LOGGED_IN: {
+                    AuctionController ac = new AuctionController();
                     System.out.println("1 - View all auctions");
                     System.out.println("2 - Take a bid");
                     System.out.println("3 - Create an auction");
@@ -95,11 +97,14 @@ public class Main {
 
                         case ("2"):
                             //TODO
+                            Auction auction = new Auction();
+                            if (ac.isFinished(auction)) {
+                                ac.getWinner(auction);
+                            }
                             state = State.LOGGED_IN;
                             break;
 
                         case ("3"):
-                            AuctionController ac = new AuctionController();
                             ac.addAuction();
                             state = State.LOGGED_IN;
                             break;

@@ -8,14 +8,24 @@ import java.util.List;
 
 public class UserView {
 
+<<<<<<< HEAD
+=======
+    public static void printUserName(User user) {
+        System.out.println("Your name is: " + user.getName());
+    }
+
+    public static void printUserSurname(User user) {
+        System.out.println("Your surname is: " + user.getSurname());
+    }
+>>>>>>> dd2d02b3782f33590782f35885618c7af95f2eef
 
     public static void printUserLogin(User user) {
-        System.out.println("Witaj " + user.getLogin());
+        System.out.println("Hello " + user.getLogin());
     }
 
 
     public static void userExist() {
-        System.out.println("Login jest zajety! Sprobuj ponownie");
+        System.out.println("Login is taken! Please try again.");
     }
 
 
@@ -26,19 +36,19 @@ public class UserView {
     }
 
     public static void giveName() {
-        System.out.println("Podaj imie");
+        System.out.println("Enter your name");
     }
 
     public static void giveSurname() {
-        System.out.println("Podaj nazwisko");
+        System.out.println("Enter your surname");
     }
 
     public static void giveLogin() {
-        System.out.println("Podaj login");
+        System.out.println("Enter your login");
     }
 
     public static void givePassword() {
-        System.out.println("Podaj haslo");
+        System.out.println("Enter your password");
     }
 
 
