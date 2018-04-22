@@ -28,7 +28,7 @@ public class FileController {
         }
     }
 
-    public static boolean checkIfLoginPresent(String string,String filePath) {
+    public static boolean checkIfLoginPresent(String string, String filePath) {
         File file = new File(filePath);
         List<String> stringFile = readFromFile(file);
         for (String lines : stringFile) {
@@ -44,12 +44,12 @@ public class FileController {
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
             String line;
-            while (true){
+            while (true) {
                 line = bufferedReader.readLine();
-                if(line == null) {
+                if (line == null) {
                     break;
                 }
-                 list.addAll(Arrays.asList(line.trim().split(SEPARATOR)));
+                list.addAll(Arrays.asList(line.trim().split(SEPARATOR)));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -60,15 +60,15 @@ public class FileController {
         return list;
     }
 
-    public static boolean checkIfLoginAndPasswordAreConnected(String login, String password,String filePath){
+    public static boolean checkIfLoginAndPasswordAreConnected(String login, String password, String filePath) {
         File file = new File(filePath);
         List<String> stringFile = readFromFile(file);
         for (String lines : stringFile) {
-            if (lines.contains(login) && lines.contains(password))  {
-                return true;
+                if (lines.contains(login) && lines.contains(password)) {
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
-    }
 
-}
+    }
