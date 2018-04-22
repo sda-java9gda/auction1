@@ -21,7 +21,8 @@ public class FileController {
 //    }
 
 
-    public static void writeToUsersFile(String text, File filePath) {
+    public static void writeToUsersFile(String text, String filePath) {
+        File file = new File(filePath);
         try (PrintWriter writer = new PrintWriter(new FileOutputStream(filePath, true))) {
             writer.print(text + SEPARATOR);
         } catch (FileNotFoundException e) {
@@ -30,8 +31,8 @@ public class FileController {
     }
 
 
-    public static void writeToUsersFile() {
-        File file = new File(USERS_FILENAME);
+    public static void writeToUsersFile(String filePath) {
+        File file = new File(filePath);
         try (PrintWriter writer = new PrintWriter(new FileOutputStream(file, true))) {
             writer.println();
         } catch (FileNotFoundException e) {
@@ -39,8 +40,8 @@ public class FileController {
         }
     }
 
-    public static boolean checkIfLoginPresent(String string) {
-        File file = new File(USERS_FILENAME);
+    public static boolean checkIfLoginPresent(String string,String filePath) {
+        File file = new File(filePath);
         List<String> stringFile = readFromFile(file);
         for (String lines : stringFile) {
             if (lines.equals(string)) {

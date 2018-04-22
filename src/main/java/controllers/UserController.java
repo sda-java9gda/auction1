@@ -16,7 +16,7 @@ public class UserController {
         setUserLogin();
         setUserName();
         setUserSurname();
-        FileController.writeToUsersFile();
+        FileController.writeToUsersFile(PATHNAME);
         return true;
     }
 
@@ -24,14 +24,14 @@ public class UserController {
         UserView.giveName();
         String name = sc.nextLine();
         user.setName(name);
-        FileController.writeToUsersFile(name, new File(PATHNAME));
+        FileController.writeToUsersFile(name,PATHNAME);
     }
 
     public void setUserSurname() {
         UserView.giveSurname();
         String surname = sc.nextLine();
         user.setSurname(surname);
-        FileController.writeToUsersFile(surname,new File(PATHNAME));
+        FileController.writeToUsersFile(surname,PATHNAME);
     }
 
     public void setUserLogin() {
@@ -41,7 +41,7 @@ public class UserController {
             UserView.userExist();
             login = sc.nextLine();
         }
-        FileController.writeToUsersFile(login,new File(PATHNAME));
+        FileController.writeToUsersFile(login,PATHNAME);
         user.setLogin(login);
         setUserPassword();
 
@@ -51,11 +51,11 @@ public class UserController {
         UserView.givePassword();
         String password = sc.nextLine();
         user.setPassword(password);
-        FileController.writeToUsersFile(password,new File(PATHNAME));
+        FileController.writeToUsersFile(password,PATHNAME);
     }
 
     public boolean checkUserExist(String login) {
-        if (FileController.checkIfLoginPresent(login)) {
+        if (FileController.checkIfLoginPresent(login,PATHNAME)) {
             return true;
         } else return false;
     }
