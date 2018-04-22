@@ -2,6 +2,7 @@ import controllers.AuctionController;
 import controllers.FileController;
 import controllers.UserController;
 import exceptions.NoSuchUserException;
+import exceptions.WrongPasswordException;
 import models.Auction;
 import models.User;
 import views.AuctionView;
@@ -25,7 +26,6 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         System.out.println("Welcome to SDAllegro!");
         UserController uc = new UserController();
-        FileController fc = new FileController();
         Map<String, User> users = new HashMap<>();
         String PATHNAME = "src/main/resources/users.txt";
 
@@ -63,44 +63,40 @@ public class Main {
                 case REGISTER: {
                     UserView.giveLogin();
                     String login = sc.nextLine().trim();
-
-//                    try {
-                        uc.checkIfLoginPresent(login,users);
-//                        uc.setUserLogin(login);
-//                    } catch (LoginUsedException e) {
-                        UserView.userExist();
-                        state=State.INIT;
-//                        break;
-//                    }
-
-                    UserView.givePassword();
-                    String password = sc.nextLine().trim();
-                    uc.addUser(login,password);
-
-                    state = State.INIT;
-                    break;
+                    if (uc.checkIfLoginPresent(login, users)) {
+                        System.out.println("Login is used.");
+                        state = State.REGISTER;
+                        break;
+                    } else {
+                        UserView.givePassword();
+                        String password = sc.nextLine().trim();
+                        uc.addUser(login, password);
+                        state = State.INIT;
+                        break;
+                    }
                 }
 
                 case LOGGING_IN: {
-                    User user;
                     System.out.println("Input login");
                     String login = sc.nextLine();
 
                     System.out.println("Input password");
                     String password = sc.nextLine();
 
-
                     try {
-                        if (uc.verify(login, password,uc.getUsers())) {
-                            user = new User(login,password);
-                            state = State.LOGGED_IN;
-                        } else {
-                            System.out.println("Wrong login or password.");
-                            state = State.INIT;
-                        }
+                        uc.verify(login, password, users);
                     } catch (NoSuchUserException e) {
-                        e.printStackTrace();
+//                        e.printStackTrace();
+                        System.out.println("No such user.");
+                        state = State.LOGGING_IN;
+                        break;
+                    } catch (WrongPasswordException e) {
+//                        e.printStackTrace();
+                        System.out.println("Wrong password.");
+                        state = State.LOGGING_IN;
+                        break;
                     }
+                    state = State.LOGGED_IN;
                     break;
                 }
 
@@ -148,6 +144,4 @@ public class Main {
             }
         }
     }
-
-
 }

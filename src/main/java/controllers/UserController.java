@@ -1,27 +1,21 @@
 package controllers;
 
 import exceptions.NoSuchUserException;
+import exceptions.WrongPasswordException;
 import models.User;
-import views.UserView;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public class UserController {
-    User user;
-    FileController fc = new FileController();
+    private User user;
+    private FileController fc = new FileController();
     Scanner sc = new Scanner(System.in);
     private static final String PATHNAME = "src/main/resources/users.txt";
-    private Map<String, User> users;
-
+    private Map<String, User> users = new HashMap<>();
     public Map<String, User> getUsers() {
         return users;
-    }
-
-    public UserController() {
-//        FileController.writeToUsersFile("",PATHNAME);
-        this.users = new HashMap<>();
     }
 
     public void addUser(String login, String password) {
@@ -29,21 +23,8 @@ public class UserController {
         String input = fc.toLine(user);
         FileController.writeToUsersFile(input, PATHNAME);
     }
-//
-//    public void setUserLogin(String login) throws LoginUsedException {
-//        if (checkUserExist(login)) {
-//            throw new LoginUsedException();
-//        }
-//    }
-//
-//    public boolean checkUserExist(String login) {
-//        if (FileController.checkIfLoginPresent(login, users)) {
-//            return true;
-//        } else return false;
-//    }
 
-
-    public boolean checkIfLoginPresent(String string, Map<String, User> users){
+    public boolean checkIfLoginPresent(String string, Map<String, User> users) {
         for (String login : users.keySet()) {
             if (login.equals(string)) {
                 return true;
@@ -52,22 +33,16 @@ public class UserController {
         return false;
     }
 
-    public boolean checkIfLoginAndPasswordAreConnected(String login, String password, Map<String, User> users){
-        if (checkIfLoginPresent(login, users)){
-            return users.get(login).getPassword().equals(password);
-        }
-        return false;
+    public boolean checkIfLoginAndPasswordAreConnected(String login, String password, Map<String, User> users) {
+        return users.get(login).getPassword().equals(password);
     }
 
-    public boolean verify(String login, String password, Map<String, User> users) throws NoSuchUserException{
-        if (checkIfLoginAndPasswordAreConnected(login, password, users)) {
-
-            return true;
-
-        } else {
-            UserView.noSuchUser();
-            throw new NoSuchUserException();
+    public void verify(String login, String password, Map<String, User> users) throws NoSuchUserException, WrongPasswordException {
+       if(!checkIfLoginPresent(login,users)){
+           throw new NoSuchUserException();
+       }
+       if (!checkIfLoginAndPasswordAreConnected(login, password, users)) {
+            throw new WrongPasswordException();
         }
     }
 }
-
