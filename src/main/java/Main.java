@@ -1,5 +1,6 @@
 
 
+import controllers.AuctionController;
 import controllers.UserController;
 
 
@@ -8,5 +9,6 @@ public class Main {
         UserController uc = new UserController();
 
         uc.addUser();
+
     }
 }

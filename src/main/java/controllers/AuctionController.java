@@ -36,4 +36,5 @@ public class AuctionController {
         AuctionView.giveAuctionName();
         auction.setName(name);
     }
+
 }
