@@ -6,20 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FileController {
-    private static final String PATHNAME = "src/main/resources/";
-    private static final String USERS_FILENAME = PATHNAME + "users.txt";
     private static final String SEPARATOR = ";";
-
-
-//    public static void writeToUsersFile(String text) {
-//        File file = new File(USERS_FILENAME);
-//        try (PrintWriter writer = new PrintWriter(new FileOutputStream(file, true))) {
-//            writer.print(text + SEPARATOR);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
 
     public static void writeToUsersFile(String text, String filePath) {
         File file = new File(filePath);
@@ -41,7 +28,7 @@ public class FileController {
         }
     }
 
-    public static boolean checkIfLoginPresent(String string,String filePath) {
+    public static boolean checkIfLoginPresent(String string, String filePath) {
         File file = new File(filePath);
         List<String> stringFile = readFromFile(file);
         for (String lines : stringFile) {
@@ -57,12 +44,12 @@ public class FileController {
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
             String line;
-            while (true){
+            while (true) {
                 line = bufferedReader.readLine();
-                if(line == null) {
+                if (line == null) {
                     break;
                 }
-                 list.addAll(Arrays.asList(line.trim().split(SEPARATOR)));
+                list.addAll(Arrays.asList(line.trim().split(SEPARATOR)));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -72,4 +59,16 @@ public class FileController {
 
         return list;
     }
-}
+
+    public static boolean checkIfLoginAndPasswordAreConnected(String login, String password, String filePath) {
+        File file = new File(filePath);
+        List<String> stringFile = readFromFile(file);
+        for (String lines : stringFile) {
+                if (lines.contains(login) && lines.contains(password)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+    }
