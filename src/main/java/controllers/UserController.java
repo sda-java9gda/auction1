@@ -61,7 +61,11 @@ public class UserController {
     }
 
     public static boolean verify(String login, String password) {
-        //TODO
-        return true;
+        if(FileController.checkIfLoginAndPasswordAreConnected(login,password,PATHNAME)){
+            return true;
+        } else {
+            return false;
     }
 }
+}
+
