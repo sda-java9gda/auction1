@@ -1,5 +1,6 @@
 package controllers;
 
+import exceptions.LoginUsedException;
 import models.User;
 import views.UserView;
 
@@ -9,47 +10,32 @@ public class UserController {
     User user;
     Scanner sc = new Scanner(System.in);
 
-    public boolean addUser() {
-        user = new User();
-        setUserLogin();
-        setUserName();
-        setUserSurname();
+    public boolean addUser(String login, String password) {
+        user = new User(login,password);
+        try {
+            setUserLogin(login);
+            FileController.writeToUsersFile(login);
+        } catch (LoginUsedException e) {
+            UserView.userExist();
+            return false;
+        }
+        setUserPassword(password);
         FileController.writeToUsersFile();
         return true;
     }
 
-    public void setUserName() {
-        UserView.giveName();
-        String name = sc.nextLine();
-        user.setName(name);
-        FileController.writeToUsersFile(name);
-    }
+    public void setUserLogin(String login) throws LoginUsedException {
 
-    public void setUserSurname() {
-        UserView.giveSurname();
-        String surname = sc.nextLine();
-        user.setSurname(surname);
-        FileController.writeToUsersFile(surname);
-    }
-
-    public void setUserLogin() {
-        UserView.giveLogin();
-        String login = sc.nextLine();
         while (checkUserExist(login)) {
-            UserView.userExist();
-            login = sc.nextLine();
+            throw new LoginUsedException();
         }
-        FileController.writeToUsersFile(login);
-        user.setLogin(login);
-        setUserPassword();
 
     }
 
-    public void setUserPassword() {
+    public void setUserPassword(String userPassword) {
         UserView.givePassword();
-        String password = sc.nextLine();
-        user.setPassword(password);
-        FileController.writeToUsersFile(password);
+        user.setPassword(userPassword);
+        FileController.writeToUsersFile(userPassword);
     }
 
     public boolean checkUserExist(String login) {

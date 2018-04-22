@@ -1,6 +1,7 @@
 import controllers.AuctionController;
 import controllers.UserController;
 import views.AuctionView;
+import views.UserView;
 
 import java.util.Scanner;
 
@@ -50,7 +51,13 @@ public class Main {
 
                 case REGISTER: {
                     UserController uc = new UserController();
-                    uc.addUser();
+
+                    UserView.giveLogin();
+                    String login = sc.nextLine().trim();
+                    UserView.givePassword();
+                    String password = sc.nextLine().trim();
+                    uc.addUser(login,password);
+
                     state = State.INIT;
                     break;
                 }
@@ -66,6 +73,7 @@ public class Main {
                     if (UserController.verify(login, password)) {
                         state = State.LOGGED_IN;
                     } else {
+                        System.out.println("Wrong login or password.");
                         state = State.INIT;
                     }
                     break;
