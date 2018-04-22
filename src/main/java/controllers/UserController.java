@@ -1,9 +1,10 @@
 package controllers;
 
+import exceptions.LoginUsedException;
+import exceptions.NoSuchUserException;
 import models.User;
 import views.UserView;
 
-import java.io.File;
 import java.util.Scanner;
 
 public class UserController {
@@ -11,57 +12,45 @@ public class UserController {
     Scanner sc = new Scanner(System.in);
     private static final String PATHNAME = "src/main/resources/users.txt";
 
-    public boolean addUser() {
-        user = new User();
-        setUserLogin();
-        setUserName();
-        setUserSurname();
-        FileController.writeToUsersFile(PATHNAME);
+    public boolean addUser(String login, String password) {
+        user = new User(login, password);
+        try {
+            setUserLogin(login);
+        } catch (LoginUsedException e) {
+            UserView.userExist();
+            return false;
+        }
+        setUserPassword(password);
         return true;
     }
 
-    public void setUserName() {
-        UserView.giveName();
-        String name = sc.nextLine();
-        user.setName(name);
-        FileController.writeToUsersFile(name,PATHNAME);
-    }
-
-    public void setUserSurname() {
-        UserView.giveSurname();
-        String surname = sc.nextLine();
-        user.setSurname(surname);
-        FileController.writeToUsersFile(surname,PATHNAME);
-    }
-
-    public void setUserLogin() {
-        UserView.giveLogin();
-        String login = sc.nextLine();
-        while (checkUserExist(login)) {
-            UserView.userExist();
-            login = sc.nextLine();
+    public void setUserLogin(String login) throws LoginUsedException {
+        if (checkUserExist(login)) {
+            throw new LoginUsedException();
         }
-        FileController.writeToUsersFile(login,PATHNAME);
-        user.setLogin(login);
-        setUserPassword();
-
+        FileController.writeToUsersFile(login, PATHNAME);
     }
 
-    public void setUserPassword() {
-        UserView.givePassword();
-        String password = sc.nextLine();
-        user.setPassword(password);
-        FileController.writeToUsersFile(password,PATHNAME);
+    public void setUserPassword(String userPassword) {
+        user.setPassword(userPassword);
+        FileController.writeToUsersFile(userPassword, PATHNAME);
     }
 
     public boolean checkUserExist(String login) {
-        if (FileController.checkIfLoginPresent(login,PATHNAME)) {
+        if (FileController.checkIfLoginPresent(login, PATHNAME)) {
             return true;
         } else return false;
     }
 
-    public static boolean verify(String login, String password) {
-        //TODO
-        return true;
+    public boolean verify(String login, String password) throws NoSuchUserException {
+        if (FileController.checkIfLoginAndPasswordAreConnected(login, password, PATHNAME)) {
+
+            return true;
+
+        } else {
+            UserView.noSuchUser();
+            throw new NoSuchUserException();
+        }
     }
 }
+

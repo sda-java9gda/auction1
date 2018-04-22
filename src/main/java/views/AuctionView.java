@@ -3,6 +3,8 @@ package views;
 import controllers.AuctionController;
 import models.Auction;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class AuctionView {
@@ -21,5 +23,8 @@ public class AuctionView {
             System.out.println(auction);
             System.out.println();
         }
+    }
+    public static void getAuction(List<String> auction) {
+        System.out.println(Arrays.asList(auction));
     }
 }

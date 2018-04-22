@@ -1,6 +1,10 @@
 import controllers.AuctionController;
 import controllers.UserController;
+import exceptions.NoSuchUserException;
+import models.Auction;
+import models.User;
 import views.AuctionView;
+import views.UserView;
 
 import java.util.Scanner;
 
@@ -50,12 +54,20 @@ public class Main {
 
                 case REGISTER: {
                     UserController uc = new UserController();
-                    uc.addUser();
+
+                    UserView.giveLogin();
+                    String login = sc.nextLine().trim();
+                    UserView.givePassword();
+                    String password = sc.nextLine().trim();
+                    uc.addUser(login,password);
+
                     state = State.INIT;
                     break;
                 }
 
                 case LOGGING_IN: {
+                    UserController uc = new UserController();
+                    User user;
                     System.out.println("Input login");
                     String login = sc.nextLine();
 
@@ -63,17 +75,24 @@ public class Main {
                     String password = sc.nextLine();
 
 
-                    if (UserController.verify(login, password)) {
-                        state = State.LOGGED_IN;
-                    } else {
-                        state = State.INIT;
+                    try {
+                        if (uc.verify(login, password)) {
+                            user = new User(login,password);
+                            state = State.LOGGED_IN;
+                        } else {
+                            System.out.println("Wrong login or password.");
+                            state = State.INIT;
+                        }
+                    } catch (NoSuchUserException e) {
+                        e.printStackTrace();
                     }
                     break;
                 }
 
                 case LOGGED_IN: {
+                    AuctionController ac = new AuctionController();
                     System.out.println("1 - View all auctions");
-                    System.out.println("2 - Take a bid");
+                    System.out.println("2 - Find auction");
                     System.out.println("3 - Create an auction");
                     System.out.println("0 - Quit");
 
@@ -87,11 +106,15 @@ public class Main {
 
                         case ("2"):
                             //TODO
+                            Auction auction = new Auction();
+                            if (ac.isFinished(auction)) {
+                                ac.getWinner(auction);
+                            }
                             state = State.LOGGED_IN;
                             break;
 
                         case ("3"):
-                            AuctionController ac = new AuctionController();
+                            Auction auction = new Auction();
                             ac.addAuction();
                             state = State.LOGGED_IN;
                             break;

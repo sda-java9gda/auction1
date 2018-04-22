@@ -8,14 +8,6 @@ import java.util.List;
 
 public class UserView {
 
-    public static void printUserName(User user) {
-        System.out.println("Your name is: " + user.getName());
-    }
-
-    public static void printUserSurname(User user) {
-        System.out.println("Your surname is: " + user.getSurname());
-    }
-
     public static void printUserLogin(User user) {
         System.out.println("Hello " + user.getLogin());
     }
@@ -31,14 +23,8 @@ public class UserView {
             System.out.println(user.getLogin());
         }
     }
-
-    public static void giveName() {
-        System.out.println("Enter your name");
-    }
-
-    public static void giveSurname() {
-        System.out.println("Enter your surname");
-    }
+    public static void noSuchUser(){
+        System.out.println("No such user or wrong login/password"); }
 
     public static void giveLogin() {
         System.out.println("Enter your login");

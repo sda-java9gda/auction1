@@ -40,4 +40,13 @@ public class AuctionController {
     public static Map<Integer, Auction> getAuctionMap() {
         return auctionMap;
     }
+
+    public boolean isFinished(Auction auction){
+        return (auction.getNumberOfBiddings() == 3);
+    }
+
+    public User getWinner(Auction auction){
+        return auction.getBiddingUser();
+    }
 }
+
