@@ -47,6 +47,7 @@ public class FileController {
             while (true) {
                 line = bufferedReader.readLine();
                 if (line == null) {
+                    bufferedReader.close();
                     break;
                 }
                 list.addAll(Arrays.asList(line.trim().split(SEPARATOR)));

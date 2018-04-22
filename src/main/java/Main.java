@@ -1,6 +1,8 @@
 import controllers.AuctionController;
 import controllers.UserController;
+import exceptions.NoSuchUserException;
 import models.Auction;
+import models.User;
 import views.AuctionView;
 import views.UserView;
 
@@ -64,6 +66,8 @@ public class Main {
                 }
 
                 case LOGGING_IN: {
+                    UserController uc = new UserController();
+                    User user;
                     System.out.println("Input login");
                     String login = sc.nextLine();
 
@@ -71,11 +75,16 @@ public class Main {
                     String password = sc.nextLine();
 
 
-                    if (UserController.verify(login, password)) {
-                        state = State.LOGGED_IN;
-                    } else {
-                        System.out.println("Wrong login or password.");
-                        state = State.INIT;
+                    try {
+                        if (uc.verify(login, password)) {
+                            user = new User(login,password);
+                            state = State.LOGGED_IN;
+                        } else {
+                            System.out.println("Wrong login or password.");
+                            state = State.INIT;
+                        }
+                    } catch (NoSuchUserException e) {
+                        e.printStackTrace();
                     }
                     break;
                 }
@@ -83,7 +92,7 @@ public class Main {
                 case LOGGED_IN: {
                     AuctionController ac = new AuctionController();
                     System.out.println("1 - View all auctions");
-                    System.out.println("2 - Take a bid");
+                    System.out.println("2 - Find auction");
                     System.out.println("3 - Create an auction");
                     System.out.println("0 - Quit");
 
@@ -105,6 +114,7 @@ public class Main {
                             break;
 
                         case ("3"):
+                            Auction auction = new Auction();
                             ac.addAuction();
                             state = State.LOGGED_IN;
                             break;
