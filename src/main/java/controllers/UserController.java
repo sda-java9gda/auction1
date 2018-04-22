@@ -15,7 +15,7 @@ public class UserController {
         setUserLogin();
         setUserName();
         setUserSurname();
-        FileController.writeToUsersFile();
+        FileController.writeToUsersFile(PATHNAME);
         return true;
     }
 
@@ -54,7 +54,7 @@ public class UserController {
     }
 
     public boolean checkUserExist(String login) {
-        if (FileController.checkIfLoginPresent(login)) {
+        if (FileController.checkIfLoginPresent(login,PATHNAME)) {
             return true;
         } else return false;
     }
