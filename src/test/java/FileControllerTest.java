@@ -3,6 +3,10 @@ import org.junit.After;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,8 +16,11 @@ public class FileControllerTest {
 
     @After
     public void flush() {
-        File file = new File(filepath);
-        boolean delete = file.delete();
+        try {
+            Files.delete(Paths.get(filepath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -43,5 +50,34 @@ public class FileControllerTest {
 
         File file = new File(filepath);
         assertThat(file).hasContent(text + separator + text + separator);
+    }
+
+    @Test
+    public void shouldNotBePresent(){
+        boolean actual = FileController.checkIfLoginPresent("login",filepath);
+
+        assertThat(actual).isFalse();
+    }
+
+    @Test
+    public void shouldBePresent(){
+        String login = "login";
+        FileController.writeToUsersFile(login,filepath);
+
+        boolean actual = FileController.checkIfLoginPresent(login,filepath);
+
+        assertThat(actual).isTrue();
+    }
+
+    @Test
+    public void shouldNotBeNullForReadFile(){
+        List actual = FileController.readFromFile(filepath);
+
+        assertThat(actual).isNotNull();
+    }
+
+    @Test
+    public void shouldReadFromFile(){
+        String filepath = "src/main/resources/testingDb.txt";
     }
 }
