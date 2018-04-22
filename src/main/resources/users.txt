@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 a;s;d;f;
 a;s;d;f;
 dfdfs;434234;dsfg;vvxcv;
 heniek;123424;marusia;dsddfrg;
 bambo;4565;stefan;kiełbasa;
+=======
+>>>>>>> 695552fe9ff1457d9270572bbeef5eadde80c4e9

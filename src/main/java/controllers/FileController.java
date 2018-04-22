@@ -1,10 +1,8 @@
 package controllers;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -37,24 +35,29 @@ public class FileController {
         for (String lines : stringFile) {
             if (lines.equals(string)) {
                 return true;
-            } else
-                return false;
+            }
         }
         return false;
     }
 
     public static List<String> readFromFile(File fileName) {
         List<String> list = new ArrayList<>();
-        File file = new File(USERS_FILENAME);
-        Scanner scanner;
         try {
-            scanner = new Scanner(file);
-            while (scanner.hasNextLine()) {
-                list.add(scanner.nextLine());
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
+            String line;
+            while (true){
+                line = bufferedReader.readLine();
+                if(line == null) {
+                    break;
+                }
+                 list.addAll(Arrays.asList(line.trim().split(SEPARATOR)));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
         return list;
     }
 }
