@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -52,29 +51,29 @@ public class FileControllerTest {
         assertThat(file).hasContent(text + separator + text + separator);
     }
 
-    @Test
-    public void shouldNotBePresent(){
-        boolean actual = FileController.checkIfLoginPresent("login",filepath);
-
-        assertThat(actual).isFalse();
-    }
-
-    @Test
-    public void shouldBePresent(){
-        String login = "login";
-        FileController.writeToUsersFile(login,filepath);
-
-        boolean actual = FileController.checkIfLoginPresent(login,filepath);
-
-        assertThat(actual).isTrue();
-    }
-
-    @Test
-    public void shouldNotBeNullForReadFile(){
-        List actual = FileController.readFromFile(filepath);
-
-        assertThat(actual).isNotNull();
-    }
+//    @Test
+//    public void shouldNotBePresent(){
+//        boolean actual = FileController.checkIfLoginPresent("login",filepath);
+//
+//        assertThat(actual).isFalse();
+//    }
+//
+//    @Test
+//    public void shouldBePresent(){
+//        String login = "login";
+//        FileController.writeToUsersFile(login,filepath);
+//
+//        boolean actual = FileController.checkIfLoginPresent(login,filepath);
+//
+//        assertThat(actual).isTrue();
+//    }
+//
+//    @Test
+//    public void shouldNotBeNullForReadFile(){
+//        List actual = FileController.readFromFile(filepath);
+//
+//        assertThat(actual).isNotNull();
+//    }
 
     @Test
     public void shouldReadFromFile(){
