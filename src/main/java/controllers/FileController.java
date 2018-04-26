@@ -1,9 +1,10 @@
 package controllers;
 
+import models.User;
+
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FileController {
     private static final String SEPARATOR = ";";
@@ -11,38 +12,24 @@ public class FileController {
     public static void writeToUsersFile(String text, String filePath) {
         File file = new File(filePath);
         try (PrintWriter writer = new PrintWriter(new FileOutputStream(file, true))) {
-
-            writer.print(text + SEPARATOR);
+            writer.print(text + "\n");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-
-    public static void writeToUsersFile(String filePath) {
-        File file = new File(filePath);
-        try (PrintWriter writer = new PrintWriter(new FileOutputStream(file, true))) {
-            writer.println();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+    public String toLine(User user) {
+        String result = "";
+        result += user.getLogin() + SEPARATOR;
+        result += user.getPassword();
+        return result;
     }
 
-    public static boolean checkIfLoginPresent(String string, String filePath) {
-        File file = new File(filePath);
-        List<String> stringFile = readFromFile(file);
-        for (String lines : stringFile) {
-            if (lines.equals(string)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static List<String> readFromFile(File fileName) {
-        List<String> list = new ArrayList<>();
+    public static Map<String, User> readFromFile(String filepath) {
+        File file = new File(filepath);
+        Map<String, User> users = new HashMap<>();
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
             String line;
             while (true) {
                 line = bufferedReader.readLine();
@@ -50,26 +37,16 @@ public class FileController {
                     bufferedReader.close();
                     break;
                 }
-                list.addAll(Arrays.asList(line.trim().split(SEPARATOR)));
+                User user = new User(parseEntry(line)[0], parseEntry(line)[1]);
+                users.put(user.getLogin(), user);
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return list;
+        return users;
     }
 
-    public static boolean checkIfLoginAndPasswordAreConnected(String login, String password, String filePath) {
-        File file = new File(filePath);
-        List<String> stringFile = readFromFile(file);
-        for (String lines : stringFile) {
-                if (lines.contains(login) && lines.contains(password)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
+    public static String[] parseEntry(String line) {
+        return line.split(SEPARATOR);
     }
+}
