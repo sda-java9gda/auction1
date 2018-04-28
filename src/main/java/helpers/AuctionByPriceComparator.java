@@ -1,4 +1,4 @@
-package othersClasses;
+package helpers;
 
 import models.Auction;
 

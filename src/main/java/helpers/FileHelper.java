@@ -33,7 +33,8 @@ public class FileHelper {
         result += auction.getName() + SEPARATOR;
         result += auction.getDescription() + SEPARATOR;
         result += auction.getSettingUser() + SEPARATOR;
-        result += auction.getPrice();
+        result += auction.getPrice() + SEPARATOR;
+        result += auction.getAuctionId();
         return result;
     }
 
@@ -71,7 +72,7 @@ public class FileHelper {
                     break;
                 }
                 Auction auction = new Auction(parseEntry(line)[1], parseEntry(line)[2],
-                        parseEntry(line)[3],Integer.valueOf(parseEntry(line)[4]));
+                        parseEntry(line)[3],Integer.valueOf(parseEntry(line)[4]),Integer.valueOf(parseEntry(line)[5])-1000);
                 auctions.put(Integer.parseInt(parseEntry(line)[0]),auction);
             }
         } catch (IOException e) {
