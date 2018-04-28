@@ -27,4 +27,8 @@ public class AuctionView {
     public static void getAuction(List<String> auction) {
         System.out.println(Arrays.asList(auction));
     }
+
+    public static void givePrice() {
+        System.out.println("Auction price.");
+    }
 }
