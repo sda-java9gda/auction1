@@ -1,48 +1,56 @@
 package controllers;
 
+import helpers.FileHelper;
 import models.Auction;
-import models.User;
-import views.AuctionView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class AuctionController {
-    private Auction auction;
-    private User user;
-    private static Map<Integer,Auction> auctionMap = new HashMap<>();
-    private static int auctionNumber = 0;
+    private static final String PATHNAME = "src/main/resources/auctions.txt";
+    private static Map<Integer, Auction> auctionMap = new HashMap<>();
+    private static int auctionNumber = FileHelper.readBiggestAuctionNumber(PATHNAME);
+    private FileHelper fileHelper = new FileHelper();
 
     public synchronized static int getAuctionNumber() {
+        return auctionNumber;
+    }
+
+    public synchronized static int setAuctionNumber() {
         auctionNumber++;
         return auctionNumber;
     }
 
-    public static void setAuctionNumber(int auctionNumber) {
-        AuctionController.auctionNumber = auctionNumber;
-    }
 
-    public void addAuction(Integer number, Auction auction){
-        auctionMap.put(number,auction);
-    }
-
-    private void setAuctionDescription(String description) {
-        AuctionView.giveAuctionDescription();
-        auction.setDescription(description);
-    }
-
-    private void setAuctionName(String name) {
-        AuctionView.giveAuctionName();
-        auction.setName(name);
+    public void addAuction(Map<Integer, Auction> auctions, Integer number, Auction auction) {
+        String input = fileHelper.toLine(auction);
+        FileHelper.writeToUsersFile(input, PATHNAME);
+        auctions.put(number, auction);
     }
 
     public static Map<Integer, Auction> getAuctionMap() {
         return auctionMap;
     }
 
-    public boolean isFinished(Auction auction){
+    public boolean isFinished(Auction auction) {
         return (auction.getNumberOfBiddings() == 3);
+    }
+
+    public static List<Auction> getAuctionsByUser(String user, Map<Integer, Auction> auctions) {
+        return auctions.values().stream().filter(x -> x.getSettingUser()
+                .equals(user)).collect(Collectors.toList());
+    }
+
+    public static List<Auction> getAuctionsByAuctionName(String name, Map<Integer, Auction> auctions) {
+        return auctions.values().stream().filter(x -> x.getName()
+                .equals(name)).collect(Collectors.toList());
+    }
+
+    public static List<Auction> getAuctionsByPrice(String price, Map<Integer, Auction> auctions) {
+        return auctions.values().stream().filter(x -> x.getPrice()==Integer.valueOf(price))
+                .collect(Collectors.toList());
     }
 
 //    public User getWinner(Auction auction){

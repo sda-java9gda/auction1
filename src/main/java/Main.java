@@ -1,14 +1,15 @@
 import controllers.AuctionController;
-import helpers.FileHelper;
 import controllers.UserController;
 import exceptions.NoSuchUserException;
 import exceptions.WrongPasswordException;
+import helpers.FileHelper;
 import models.Auction;
 import models.User;
 import views.AuctionView;
 import views.UserView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -27,13 +28,15 @@ public class Main {
         System.out.println("Welcome to SDAllegro!");
         UserController uc = new UserController();
         Map<String, User> users = new HashMap<>();
-        String PATHNAME = "src/main/resources/users.txt";
+        Map<Integer, Auction> auctions = new HashMap<>();
+        final String PATHNAME_USERS = "src/main/resources/users.txt";
+        final String PATHNAME_AUCTIONS = "src/main/resources/auctions.txt";
         User user = null;
 
         while (state != State.EXIT) {
             switch (state) {
                 case INIT:
-                    users = FileHelper.readFromFile(PATHNAME);
+                    users = FileHelper.readFromFile(PATHNAME_USERS);
                     System.out.println("Pick one:");
                     System.out.println("1 - Log in");
                     System.out.println("2 - Register");
@@ -95,12 +98,13 @@ public class Main {
                         state = State.INIT;
                         break;
                     }
-                    user = new User(login,password);
+                    user = new User(login, password);
                     state = State.LOGGED_IN;
                     break;
                 }
 
                 case LOGGED_IN: {
+                    auctions = FileHelper.readFromFileAuction(PATHNAME_AUCTIONS);
                     AuctionController ac = new AuctionController();
                     System.out.println("1 - View all auctions");
                     System.out.println("2 - Find auction");
@@ -111,15 +115,54 @@ public class Main {
 
                     switch (answer) {
                         case ("1"):
-                            AuctionView.viewAllAuctions();
+                            AuctionView.viewAllAuctions(auctions);
                             state = State.LOGGED_IN;
                             break;
 
                         case ("2"):
-//                            Auction auction = new Auction();
-//                            if (ac.isFinished(auction)) {
-//                                ac.getWinner(auction);
-//                            }
+
+                            System.out.println("1 - By username");
+                            System.out.println("2 - By Auction name");
+                            System.out.println("3 - By Auction price");
+
+                            answer = sc.nextLine();
+
+                            switch (answer) {
+
+
+                                case ("1"): {
+                                    AuctionView.getAuctionByUser();
+                                    String line = sc.nextLine();
+                                    List<Auction> auctionsListByUser = AuctionController.getAuctionsByUser(line, auctions);
+                                    AuctionView.printAuctionsByUser(auctionsListByUser);
+                                    break;
+                                }
+
+                                case ("2"): {
+                                    AuctionView.getAuctionByAuctionName();
+                                    String line = sc.nextLine();
+                                    List<Auction> auctionsListByAuctionName = AuctionController.getAuctionsByAuctionName(line, auctions);
+                                    AuctionView.printAuctionsByAuctionName(auctionsListByAuctionName);
+                                    break;
+                                }
+
+                                case ("3"): {
+                                    AuctionView.getAuctionByPrice();
+                                    String line = sc.nextLine();
+                                    List<Auction> auctionsListByPrice = AuctionController.getAuctionsByAuctionName(line, auctions);
+//                                    AuctionView.printAuctionsByAuctionName(auctionsListByAuctionName);
+                                    break;
+                                }
+                            }
+
+
+//                            AuctionView.getAuctionByUser();
+
+
+//                            List<Auction> list = auctions.values().stream().filter(x -> x.getSettingUser()
+//                                    .equals(line)).collect(Collectors.toList());
+//                            System.out.println(list);
+
                             state = State.LOGGED_IN;
                             break;
 
@@ -133,8 +176,8 @@ public class Main {
                             AuctionView.givePrice();
                             int auctionPrice = Integer.valueOf(sc.nextLine());
 
-                            Auction auction = new Auction(auctionName,auctionDescription,user.getLogin(),auctionPrice);
-                            ac.addAuction(AuctionController.getAuctionNumber(),auction);
+                            Auction auction = new Auction(auctionName, auctionDescription, user.getLogin(), auctionPrice);
+                            ac.addAuction(auctions,AuctionController.setAuctionNumber(), auction);
                             state = State.LOGGED_IN;
                             break;
 
