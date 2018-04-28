@@ -71,7 +71,7 @@ public class Main {
                     } else {
                         UserView.givePassword();
                         String password = sc.nextLine().trim();
-                        uc.addUser(login, password);
+                        User.addUser(login, password);
                         state = State.INIT;
                         break;
                     }

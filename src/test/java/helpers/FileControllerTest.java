@@ -1,4 +1,5 @@
-import helpers.FileController;
+package helpers;
+
 import models.User;
 import org.junit.After;
 import org.junit.Test;

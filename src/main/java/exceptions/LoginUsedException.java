@@ -1,4 +1,4 @@
 package exceptions;
 
-public class LoginUsedException extends Exception {
+public class LoginUsedException extends RuntimeException {
 }
