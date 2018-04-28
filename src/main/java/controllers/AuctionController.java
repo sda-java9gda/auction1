@@ -2,7 +2,7 @@ package controllers;
 
 import helpers.FileHelper;
 import models.Auction;
-import othersClasses.AuctionByPriceComparator;
+import helpers.AuctionByPriceComparator;
 
 import java.util.HashMap;
 import java.util.List;
