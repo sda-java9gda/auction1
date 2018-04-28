@@ -34,23 +34,21 @@ public class AuctionView {
         System.out.println("Entry Auction name");
     }
 
-    public static void getAuctionByPrice(){
-        System.out.println("Entry Auction price");
+    public static void getAuctionByBeginningPrice(){
+        System.out.println("Entry auction beginning price");
+    }
+    public static void getAuctionByEndingPrice(){
+        System.out.println("Entry auction ending price");
     }
 
     public static void givePrice() {
         System.out.println("Auction price.");
     }
 
-    public static void printAuctionsByUser(List<Auction> auctions){
+    public static void printAuctionsBy(List<Auction> auctions){
         for (Auction auction: auctions) {
             System.out.println(auction);
         }
     }
 
-    public static void printAuctionsByAuctionName(List<Auction> auctions){
-        for (Auction auction: auctions) {
-            System.out.println(auction);
-        }
-    }
 }

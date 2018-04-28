@@ -2,7 +2,10 @@ package controllers;
 
 import helpers.FileHelper;
 import models.Auction;
+import othersClasses.AuctionByPriceComparator;
+import views.AuctionView;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,12 +51,11 @@ public class AuctionController {
                 .equals(name)).collect(Collectors.toList());
     }
 
-    public static List<Auction> getAuctionsByPrice(String price, Map<Integer, Auction> auctions) {
-        return auctions.values().stream().filter(x -> x.getPrice()==Integer.valueOf(price))
+    public static List<Auction> getAuctionsByPrice(String beginningPrice, String endPrice, Map<Integer, Auction> auctions) {
+        return auctions.values().stream()
+                .filter(x -> x.getPrice() >= Integer.valueOf(beginningPrice)
+                        && x.getPrice()<=Integer.valueOf(endPrice))
+                .sorted(new AuctionByPriceComparator())
                 .collect(Collectors.toList());
     }
-
-//    public User getWinner(Auction auction){
-//        return auction.getBiddingUser();
-//    }
 }
