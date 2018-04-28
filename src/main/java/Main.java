@@ -173,6 +173,9 @@ public class Main {
 
                             Auction auction = new Auction(auctionName, auctionDescription, user.getLogin(), auctionPrice);
                             ac.addAuction(auctions,AuctionController.setAuctionNumber(), auction);
+                            FileHelper fileHelper = new FileHelper();
+                            String input = fileHelper.toLine(auction);
+                            FileHelper.writeToUsersFile(input, PATHNAME_AUCTIONS);
                             state = State.LOGGED_IN;
                             break;
 

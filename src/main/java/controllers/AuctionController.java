@@ -3,9 +3,7 @@ package controllers;
 import helpers.FileHelper;
 import models.Auction;
 import othersClasses.AuctionByPriceComparator;
-import views.AuctionView;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,8 +26,6 @@ public class AuctionController {
 
 
     public void addAuction(Map<Integer, Auction> auctions, Integer number, Auction auction) {
-        String input = fileHelper.toLine(auction);
-        FileHelper.writeToUsersFile(input, PATHNAME);
         auctions.put(number, auction);
     }
 
