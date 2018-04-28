@@ -1,9 +1,9 @@
 package models;
 
-import helpers.FileController;
+import helpers.FileHelper;
 
 public class User {
-    private static FileController fc = new FileController();
+    private static FileHelper fc = new FileHelper();
     private String login;
     private String password;
     private static final String PATHNAME = "src/main/resources/users.txt";
@@ -25,6 +25,6 @@ public class User {
         User user = new User(login, password);
 
         String input = fc.toLine(user);
-        FileController.writeToUsersFile(input, PATHNAME);
+        FileHelper.writeToUsersFile(input, PATHNAME);
     }
 }

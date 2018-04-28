@@ -12,7 +12,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class FileControllerTest {
+public class FileHelperTest {
     private String testingDatabaseFilepath = "src/test/resources/testingDb.txt";
     private String filepath = "src/main/resources/test.txt";
 
@@ -26,7 +26,7 @@ public class FileControllerTest {
 
     @Test
     public void shouldCreateNewFile() {
-        FileController.writeToUsersFile("", filepath);
+        FileHelper.writeToUsersFile("", filepath);
 
         File file = new File(filepath);
         assertThat(file).exists();
@@ -35,7 +35,7 @@ public class FileControllerTest {
     @Test
     public void shouldContainText() {
         String text = "test";
-        FileController.writeToUsersFile(text, filepath);
+        FileHelper.writeToUsersFile(text, filepath);
 
         File file = new File(filepath);
         assertThat(file).hasContent(text);
@@ -43,7 +43,7 @@ public class FileControllerTest {
 
     @Test
     public void shouldParseToLine() {
-        FileController fc = new FileController();
+        FileHelper fc = new FileHelper();
         User user = new User("login", "password");
         String actual = fc.toLine(user);
 
@@ -55,7 +55,7 @@ public class FileControllerTest {
 
     @Test
     public void shouldReadFromFile(){
-        Map<String,User> map = FileController.readFromFile(testingDatabaseFilepath);
+        Map<String,User> map = FileHelper.readFromFile(testingDatabaseFilepath);
         String login1 = "login1";
         Object actual = map.get(login1);
 
@@ -64,7 +64,7 @@ public class FileControllerTest {
 
     @Test
     public void shouldNotReadFromFile(){
-        Map<String,User> map = FileController.readFromFile(testingDatabaseFilepath);
+        Map<String,User> map = FileHelper.readFromFile(testingDatabaseFilepath);
         String login999 = "login999";
         Object actual = map.get(login999);
 
@@ -73,7 +73,7 @@ public class FileControllerTest {
 
     @Test
     public void shouldGetCorrectPassword(){
-        Map<String,User> map = FileController.readFromFile(testingDatabaseFilepath);
+        Map<String,User> map = FileHelper.readFromFile(testingDatabaseFilepath);
         String expected = "password1";
 
         String actual = map.get("login1").getPassword();

@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FileController {
+public class FileHelper {
     private static final String SEPARATOR = ";";
 
     public static void writeToUsersFile(String text, String filePath) {

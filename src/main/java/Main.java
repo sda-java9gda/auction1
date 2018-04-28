@@ -1,5 +1,5 @@
 import controllers.AuctionController;
-import helpers.FileController;
+import helpers.FileHelper;
 import controllers.UserController;
 import exceptions.NoSuchUserException;
 import exceptions.WrongPasswordException;
@@ -33,7 +33,7 @@ public class Main {
         while (state != State.EXIT) {
             switch (state) {
                 case INIT:
-                    users = FileController.readFromFile(PATHNAME);
+                    users = FileHelper.readFromFile(PATHNAME);
                     System.out.println("Pick one:");
                     System.out.println("1 - Log in");
                     System.out.println("2 - Register");
