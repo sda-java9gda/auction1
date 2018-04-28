@@ -120,44 +120,42 @@ public class Main {
                         case ("2"):
 
                             System.out.println("1 - By username");
-                            System.out.println("2 - By Auction name");
-                            System.out.println("3 - By Auction price");
+                            System.out.println("2 - By auction name");
+                            System.out.println("3 - By auction price");
 
                             answer = sc.nextLine();
 
                             switch (answer) {
-
-                                String line;
-
-                                case ("1"):
+                                case ("1"): {
                                     AuctionView.getAuctionByUser();
-                                    line = sc.nextLine();
+                                    String line = sc.nextLine();
                                     List<Auction> auctionsListByUser = AuctionController.getAuctionsByUser(line, auctions);
-                                    AuctionView.printAuctionsByUser(auctionsListByUser);
+                                    AuctionView.printAuctionsBy(auctionsListByUser);
                                     break;
+                                }
 
-                                case ("2"):
+                                case ("2"): {
                                     AuctionView.getAuctionByAuctionName();
-                                    line = sc.nextLine();
-                                    List<Auction> auctionsListByAuctionName = AuctionController.getAuctionsByAuctionName(line,auctions);
-                                    AuctionView.printAuctionsByAuctionName(auctionsListByAuctionName);
+                                    String line = sc.nextLine();
+                                    List<Auction> auctionsListByAuctionName = AuctionController.getAuctionsByAuctionName(line, auctions);
+                                    AuctionView.printAuctionsBy(auctionsListByAuctionName);
                                     break;
-                                case ("3"):
-                                    AuctionView.getAuctionByPrice();
-                                    line = sc.nextLine();
-                                    List<Auction> auctionsListByPrice = AuctionController.getAuctionsByAuctionName(line,auctions);
-                                    AuctionView.printAuctionsByAuctionName(auctionsListByAuctionName);
+                                }
+                                case ("3"): {
+                                    AuctionView.getAuctionByBeginningPrice();
+                                    String beginningPrice = sc.nextLine();
+                                    AuctionView.getAuctionByEndingPrice();
+                                    String endingPrice = sc.nextLine();
+                                    List<Auction> auctionsListByPrice =
+                                            AuctionController.getAuctionsByPrice(beginningPrice,endingPrice, auctions);
+                                    AuctionView.printAuctionsBy(auctionsListByPrice);
                                     break;
+                                }
+                                default: {
+                                    System.out.println("Wrong answer!");
+                                    break;
+                                }
                             }
-
-
-//                            AuctionView.getAuctionByUser();
-
-
-//                            List<Auction> list = auctions.values().stream().filter(x -> x.getSettingUser()
-//                                    .equals(line)).collect(Collectors.toList());
-//                            System.out.println(list);
-
                             state = State.LOGGED_IN;
                             break;
 
