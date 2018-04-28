@@ -45,6 +45,10 @@ public class AuctionView {
         System.out.println("Auction price.");
     }
 
+    public static void getAuctionByAuctionId() {
+        System.out.println("Give auction ID");
+    }
+
     public static void printAuctionsBy(List<Auction> auctions){
         for (Auction auction: auctions) {
             System.out.println(auction);

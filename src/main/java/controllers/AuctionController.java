@@ -54,4 +54,8 @@ public class AuctionController {
                 .sorted(new AuctionByPriceComparator())
                 .collect(Collectors.toList());
     }
+
+    public static Auction getAuctionById(Integer auctionId, Map<Integer, Auction> auctions){
+        return auctions.get(auctionId-999);
+    }
 }

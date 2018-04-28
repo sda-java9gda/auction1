@@ -124,6 +124,7 @@ public class Main {
                             System.out.println("1 - By username");
                             System.out.println("2 - By auction name");
                             System.out.println("3 - By auction price");
+                            System.out.println("4 - By auction Id");
 
                             answer = sc.nextLine();
 
@@ -153,6 +154,14 @@ public class Main {
                                     AuctionView.printAuctionsBy(auctionsListByPrice);
                                     break;
                                 }
+                                case  ("4"): {
+                                    AuctionView.getAuctionByAuctionId();
+                                    String auctionId = sc.nextLine();
+                                    System.out.println(AuctionController.getAuctionById(Integer.parseInt(auctionId),auctions));
+                                    break;
+
+                                }
+
                                 default: {
                                     System.out.println("Wrong answer!");
                                     break;
@@ -171,7 +180,10 @@ public class Main {
                             AuctionView.givePrice();
                             int auctionPrice = Integer.valueOf(sc.nextLine());
 
-                            Auction auction = new Auction(auctionName, auctionDescription, user.getLogin(), auctionPrice);
+                            Auction auction =
+                                    new Auction(auctionName, auctionDescription, user.getLogin(),
+                                            auctionPrice,AuctionController.getAuctionNumber());
+
                             ac.addAuction(auctions,AuctionController.setAuctionNumber(), auction);
                             FileHelper fileHelper = new FileHelper();
                             String input = fileHelper.toLine(auction);
