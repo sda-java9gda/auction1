@@ -1,6 +1,5 @@
 package controllers;
 
-import controllers.UserController;
 import models.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,13 +11,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserControllerTests {
     private UserController uc;
-    private User user;
     private Map<String, User> users;
 
     @Before
     public void setUp() {
         this.uc = new UserController();
-        this.user = new User("login", "password");
+        User user = new User("login", "password");
         this.users = new HashMap<>();
         users.put("login", user);
     }

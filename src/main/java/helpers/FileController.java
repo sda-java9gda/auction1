@@ -46,7 +46,7 @@ public class FileController {
         return users;
     }
 
-    public static String[] parseEntry(String line) {
+    private static String[] parseEntry(String line) {
         return line.split(SEPARATOR);
     }
 }
