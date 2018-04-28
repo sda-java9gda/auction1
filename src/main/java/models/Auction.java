@@ -9,6 +9,14 @@ public class Auction {
     private String userLogin;
     private int price;
 
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
     public Auction(String name, String description, String settingUser, Integer price) {
         this.name = name;
         this.description = description;
