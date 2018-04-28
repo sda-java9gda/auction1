@@ -1,4 +1,5 @@
-import controllers.FileController;
+import helpers.FileController;
+import models.User;
 import org.junit.After;
 import org.junit.Test;
 
@@ -6,19 +7,19 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class FileControllerTest {
-
+    private String testingDatabaseFilepath = "src/test/resources/testingDb.txt";
     private String filepath = "src/main/resources/test.txt";
 
     @After
     public void flush() {
         try {
             Files.delete(Paths.get(filepath));
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
     }
 
@@ -31,52 +32,51 @@ public class FileControllerTest {
     }
 
     @Test
-    public void shouldContainTest() {
+    public void shouldContainText() {
         String text = "test";
-        String separator = ";";
         FileController.writeToUsersFile(text, filepath);
 
         File file = new File(filepath);
-        assertThat(file).hasContent(text + separator);
+        assertThat(file).hasContent(text);
     }
 
     @Test
-    public void shouldAppendFile() {
-        String text = "test;";
-        String separator = ";";
-        FileController.writeToUsersFile(text, filepath);
-        FileController.writeToUsersFile(text, filepath);
+    public void shouldParseToLine() {
+        FileController fc = new FileController();
+        User user = new User("login", "password");
+        String actual = fc.toLine(user);
 
-        File file = new File(filepath);
-        assertThat(file).hasContent(text + separator + text + separator);
+        String expected = "login;password";
+
+        assertThat(actual).isEqualTo(expected);
+
     }
-
-//    @Test
-//    public void shouldNotBePresent(){
-//        boolean actual = FileController.checkIfLoginPresent("login",filepath);
-//
-//        assertThat(actual).isFalse();
-//    }
-//
-//    @Test
-//    public void shouldBePresent(){
-//        String login = "login";
-//        FileController.writeToUsersFile(login,filepath);
-//
-//        boolean actual = FileController.checkIfLoginPresent(login,filepath);
-//
-//        assertThat(actual).isTrue();
-//    }
-//
-//    @Test
-//    public void shouldNotBeNullForReadFile(){
-//        List actual = FileController.readFromFile(filepath);
-//
-//        assertThat(actual).isNotNull();
-//    }
 
     @Test
     public void shouldReadFromFile(){
-        String filepath = "src/main/resources/testingDb.txt";
+        Map<String,User> map = FileController.readFromFile(testingDatabaseFilepath);
+        String login1 = "login1";
+        Object actual = map.get(login1);
+
+        assertThat(actual).isNotNull();
+    }
+
+    @Test
+    public void shouldNotReadFromFile(){
+        Map<String,User> map = FileController.readFromFile(testingDatabaseFilepath);
+        String login999 = "login999";
+        Object actual = map.get(login999);
+
+        assertThat(actual).isNull();
+    }
+
+    @Test
+    public void shouldGetCorrectPassword(){
+        Map<String,User> map = FileController.readFromFile(testingDatabaseFilepath);
+        String expected = "password1";
+
+        String actual = map.get("login1").getPassword();
+
+        assertThat(actual).isEqualTo(expected);
     }
 }

@@ -11,28 +11,28 @@ import java.util.Scanner;
 public class AuctionController {
     private Auction auction;
     private User user;
-    private Scanner sc = new Scanner(System.in);
     private static Map<Integer,Auction> auctionMap = new HashMap<>();
+    private static int auctionNumber = 0;
 
-    public void addAuction(){
-        auction = new Auction();
-        setAuctionName();
-        setAuctionDescription();
-        auction.setSettingUser(this.user);
-
-        auctionMap.put(auction.getId(),auction);
-        Integer tmp =auction.getId();
-        auction.setId(tmp++);
+    public synchronized static int getAuctionNumber() {
+        auctionNumber++;
+        return auctionNumber;
     }
 
-    private void setAuctionDescription() {
-        String name = sc.nextLine();
+    public static void setAuctionNumber(int auctionNumber) {
+        AuctionController.auctionNumber = auctionNumber;
+    }
+
+    public void addAuction(Integer number, Auction auction){
+        auctionMap.put(number,auction);
+    }
+
+    private void setAuctionDescription(String description) {
         AuctionView.giveAuctionDescription();
-        auction.setDescription(name);
+        auction.setDescription(description);
     }
 
-    private void setAuctionName() {
-        String name = sc.nextLine();
+    private void setAuctionName(String name) {
         AuctionView.giveAuctionName();
         auction.setName(name);
     }
@@ -45,7 +45,7 @@ public class AuctionController {
         return (auction.getNumberOfBiddings() == 3);
     }
 
-    public User getWinner(Auction auction){
-        return auction.getBiddingUser();
-    }
+//    public User getWinner(Auction auction){
+//        return auction.getBiddingUser();
+//    }
 }

@@ -1,5 +1,5 @@
 import controllers.AuctionController;
-import controllers.FileController;
+import helpers.FileController;
 import controllers.UserController;
 import exceptions.NoSuchUserException;
 import exceptions.WrongPasswordException;
@@ -28,6 +28,7 @@ public class Main {
         UserController uc = new UserController();
         Map<String, User> users = new HashMap<>();
         String PATHNAME = "src/main/resources/users.txt";
+        User user = null;
 
         while (state != State.EXIT) {
             switch (state) {
@@ -64,7 +65,7 @@ public class Main {
                     UserView.giveLogin();
                     String login = sc.nextLine().trim();
                     if (uc.checkIfLoginPresent(login, users)) {
-                        System.out.println("Login is used.");
+                        UserView.userExist();
                         state = State.REGISTER;
                         break;
                     } else {
@@ -77,25 +78,24 @@ public class Main {
                 }
 
                 case LOGGING_IN: {
-                    System.out.println("Input login");
+                    UserView.giveLogin();
                     String login = sc.nextLine();
 
-                    System.out.println("Input password");
+                    UserView.givePassword();
                     String password = sc.nextLine();
 
                     try {
                         uc.verify(login, password, users);
                     } catch (NoSuchUserException e) {
-//                        e.printStackTrace();
-                        System.out.println("No such user.");
-                        state = State.LOGGING_IN;
+                        UserView.noSuchUser();
+                        state = State.INIT;
                         break;
                     } catch (WrongPasswordException e) {
-//                        e.printStackTrace();
-                        System.out.println("Wrong password.");
-                        state = State.LOGGING_IN;
+                        UserView.wrongPassword();
+                        state = State.INIT;
                         break;
                     }
+                    user = new User(login,password);
                     state = State.LOGGED_IN;
                     break;
                 }
@@ -116,17 +116,25 @@ public class Main {
                             break;
 
                         case ("2"):
-                            //TODO
-                            Auction auction = new Auction();
-                            if (ac.isFinished(auction)) {
-                                ac.getWinner(auction);
-                            }
+//                            Auction auction = new Auction();
+//                            if (ac.isFinished(auction)) {
+//                                ac.getWinner(auction);
+//                            }
                             state = State.LOGGED_IN;
                             break;
 
                         case ("3"):
-                            auction = new Auction();
-                            ac.addAuction();
+                            AuctionView.giveAuctionName();
+                            String auctionName = sc.nextLine();
+
+                            AuctionView.giveAuctionDescription();
+                            String auctionDescription = sc.nextLine();
+
+                            AuctionView.givePrice();
+                            int auctionPrice = Integer.valueOf(sc.nextLine());
+
+                            Auction auction = new Auction(auctionName,auctionDescription,user.getLogin(),auctionPrice);
+                            ac.addAuction(AuctionController.getAuctionNumber(),auction);
                             state = State.LOGGED_IN;
                             break;
 
@@ -136,7 +144,7 @@ public class Main {
 
                         default:
                             System.out.println("Wrong answer!");
-                            state = State.INIT;
+                            state = State.LOGGED_IN;
                             break;
                     }
                     break;
