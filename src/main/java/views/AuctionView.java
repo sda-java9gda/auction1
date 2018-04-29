@@ -3,7 +3,6 @@ package views;
 import models.Auction;
 import models.TreeNode;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -21,10 +20,6 @@ public class AuctionView {
         for (Integer key : auctions.keySet()) {
             System.out.println(key + " " + auctions.get(key));
         }
-    }
-
-    public static void getAuction(List<String> auction) {
-        System.out.println(Arrays.asList(auction));
     }
 
     public static void getAuctionByUser() {
@@ -57,14 +52,14 @@ public class AuctionView {
         }
     }
 
-    public static void viewAuctions(TreeNode<Auction> caterogy) {
+    public static void viewAuctions(TreeNode caterogy) {
         System.out.println(caterogy);
         if (caterogy.isLeaf()) {
             for (Auction auction : caterogy.getAuctions()) {
                 System.out.println(auction);
             }
         } else {
-            for (TreeNode<Auction> child : caterogy.getChildren()) {
+            for (TreeNode child : caterogy.getChildren()) {
                 for (int i = 0; i < child.branchesToRoot(); i++) {
                     System.out.print("   ");
                 }

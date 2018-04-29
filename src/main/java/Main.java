@@ -1,8 +1,14 @@
-import controllers.*;
-import exceptions.*;
+import controllers.AuctionController;
+import controllers.UserController;
+import exceptions.NoSuchUserException;
+import exceptions.WrongPasswordException;
 import helpers.FileHelper;
-import models.*;
-import views.*;
+import models.Auction;
+import models.TreeNode;
+import models.User;
+import views.AuctionView;
+import views.TreeNodeView;
+import views.UserView;
 
 import java.util.*;
 
@@ -23,7 +29,7 @@ public class Main {
         final String PATHNAME_USERS = "src/main/resources/users.txt";
         final String PATHNAME_AUCTIONS = "src/main/resources/auctions.txt";
         User user = null;
-        final TreeNode<Auction> root = setupTree();
+        final TreeNode root = setupTree();
 
         Map<Integer, Auction> auctions = FileHelper.readFromFileAuction(PATHNAME_AUCTIONS);
         for (Auction auction : auctions.values()) {
@@ -220,7 +226,7 @@ public class Main {
                             }
                             String ignored = sc.nextLine();
 
-                            TreeNode<Auction> category = root.searchById(categoryId);
+                            TreeNode category = root.searchById(categoryId);
                             AuctionView.viewAuctions(category);
                             System.out.println();
                             state = State.LOGGED_IN;
@@ -244,16 +250,16 @@ public class Main {
         }
     }
 
-    private static TreeNode<Auction> setupTree() {
-        final TreeNode<Auction> root = new TreeNode<>(0, "Categories");
-        final TreeNode<Auction> child1 = new TreeNode<>(1, "Computers");
-        final TreeNode<Auction> child11 = new TreeNode<>(11, "Laptops");
-        final TreeNode<Auction> child111 = new TreeNode<>(111, "Lenovo");
-        final TreeNode<Auction> child112 = new TreeNode<>(112, "Asus");
-        final TreeNode<Auction> child113 = new TreeNode<>(113, "Dell");
-        final TreeNode<Auction> child12 = new TreeNode<>(12, "PC");
-        final TreeNode<Auction> child2 = new TreeNode<>(2, "Cars");
-        final TreeNode<Auction> child21 = new TreeNode<>(21, "SUVs");
+    private static TreeNode setupTree() {
+        final TreeNode root = new TreeNode(0, "Categories");
+        final TreeNode child1 = new TreeNode(1, "Computers");
+        final TreeNode child11 = new TreeNode(11, "Laptops");
+        final TreeNode child111 = new TreeNode(111, "Lenovo");
+        final TreeNode child112 = new TreeNode(112, "Asus");
+        final TreeNode child113 = new TreeNode(113, "Dell");
+        final TreeNode child12 = new TreeNode(12, "PC");
+        final TreeNode child2 = new TreeNode(2, "Cars");
+        final TreeNode child21 = new TreeNode(21, "SUVs");
         root.addChild(child1);
         root.addChild(child2);
         child1.addChild(child11);
