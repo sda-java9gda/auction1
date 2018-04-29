@@ -46,6 +46,9 @@ public class Main {
         child1.addChild(child12);
         child2.addChild(child21);
 
+        Auction auctionn = null;
+
+
         while (state != State.EXIT) {
             switch (state) {
                 case INIT:
@@ -176,9 +179,27 @@ public class Main {
                                 case ("4"): {
                                     AuctionView.getAuctionByAuctionId();
                                     String auctionId = sc.nextLine();
-                                    System.out.println(AuctionController.getAuctionById(Integer.parseInt(auctionId), auctions));
-                                    break;
+                                    auctionn = AuctionController.getAuctionById(Integer.parseInt(auctionId),auctions);
+                                    System.out.println(auctionn);
+                                    String price;
 
+                                    if (auctionn.getSettingUser().equals(user.getLogin())){
+                                        System.out.println("U cant bid your own auction");
+                                        break;
+                                    } else {
+
+                                        System.out.println("To bid this auction enter your price");
+                                        price = sc.nextLine();
+                                        while (Integer.valueOf(price) <= auctionn.getPrice()) {
+                                            System.out.println("Wrong price, try again");
+                                            price = sc.nextLine();
+                                        }
+                                    }
+                                    auctionn.setBiddingUser(user.getLogin());
+                                    auctionn.setPrice(Integer.valueOf(price));
+                                    FileHelper.overwriteAuctionById(auctionId,price, user.getLogin(),PATHNAME_AUCTIONS);
+
+                                    break;
                                 }
 
                                 default: {
@@ -198,7 +219,6 @@ public class Main {
 
                             AuctionView.givePrice();
                             int auctionPrice = Integer.valueOf(sc.nextLine());
-
                             int categoryId = 0;
                             do {
                                 AuctionView.getCategoryId();

@@ -19,11 +19,14 @@ public class AuctionController {
         return auctionNumber;
     }
 
+    public static void setAuctionNumber(int auctionNumber) {
+        AuctionController.auctionNumber = auctionNumber;
+    }
+
     public synchronized static int setAuctionNumber() {
         auctionNumber++;
         return auctionNumber;
     }
-
 
     public void addAuction(Map<Integer, Auction> auctions, Integer number, Auction auction) {
         auctions.put(number, auction);

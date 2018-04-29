@@ -88,9 +88,12 @@ public class Auction {
 
     @Override
     public String toString() {
-        return  "Auction: " + name + '\'' +
+        return "Auction{" +
+                "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", settingUser='" + settingUser + '\'' +
+                ", biddingUser='" + ((biddingUser == null) ? "none" : biddingUser) +
+                ", numberOfBiddings=" + numberOfBiddings +
                 ", price=" + price +
                 ", auctionId=" + auctionId +
                 '}';
