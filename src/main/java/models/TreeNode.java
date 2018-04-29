@@ -23,7 +23,7 @@ public class TreeNode {
         return children;
     }
 
-    public TreeNode getParent() {
+    private TreeNode getParent() {
         return parent;
     }
 
@@ -31,10 +31,9 @@ public class TreeNode {
         this.parent = parent;
     }
 
-    public TreeNode addChild(TreeNode child) {
+    public void addChild(TreeNode child) {
         child.setParent(this);
         this.children.add(child);
-        return child;
     }
 
     public boolean isRoot() {
@@ -43,10 +42,6 @@ public class TreeNode {
 
     public boolean isLeaf() {
         return children.isEmpty();
-    }
-
-    public void deleteChild(TreeNode child) {
-        child.getParent().getChildren().clear();
     }
 
     public void addAuction(Auction auction) {

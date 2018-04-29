@@ -52,14 +52,14 @@ public class AuctionView {
         }
     }
 
-    public static void viewAuctions(TreeNode caterogy) {
-        System.out.println(caterogy);
-        if (caterogy.isLeaf()) {
-            for (Auction auction : caterogy.getAuctions()) {
+    public static void viewAuctions(TreeNode category) {
+        System.out.println(category);
+        if (category.isLeaf()) {
+            for (Auction auction : category.getAuctions()) {
                 System.out.println(auction);
             }
         } else {
-            for (TreeNode child : caterogy.getChildren()) {
+            for (TreeNode child : category.getChildren()) {
                 for (int i = 0; i < child.branchesToRoot(); i++) {
                     System.out.print("   ");
                 }

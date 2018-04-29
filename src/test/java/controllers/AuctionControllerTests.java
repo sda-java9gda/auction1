@@ -9,7 +9,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AuctionControllerTests {
-    AuctionController ac = new AuctionController();
+    private AuctionController ac = new AuctionController();
     Auction auction = new Auction("Name","Description","User",1,5345345,1);
     Map<Integer, Auction> auctions = new HashMap<>();
 

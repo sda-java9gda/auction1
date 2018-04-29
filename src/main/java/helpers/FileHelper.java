@@ -22,9 +22,9 @@ public class FileHelper {
         }
     }
 
-    public static void overwriteAuctionById(String id,String price, String biddingUser,String filePath) {
+    public static void overwriteAuctionById(String id, String price, String biddingUser, String filePath) {
         File file = new File(filePath);
-        try (PrintWriter writer = new PrintWriter(new FileOutputStream(file, true))){
+        try (PrintWriter writer = new PrintWriter(new FileOutputStream(file, true))) {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
             String line;
             List<String> list = new ArrayList<>();
@@ -36,12 +36,12 @@ public class FileHelper {
                     break;
                 }
 
-                for (String lines: line.split(SEPARATOR)) {
-                    if (lines.contains(id)){
+                for (String lines : line.split(SEPARATOR)) {
+                    if (lines.contains(id)) {
                         list.add(line);
                     }
                 }
-                String auctionString = list.get(list.size()-1);
+                String auctionString = list.get(list.size() - 1);
                 Auction auction = new Auction(parseEntry(auctionString)[1], parseEntry(auctionString)[2],
                         parseEntry(auctionString)[3], Integer.valueOf(parseEntry(auctionString)[5]),
                         Integer.valueOf(parseEntry(auctionString)[6]) - 1000, Integer.valueOf(parseEntry(auctionString)[7]));
@@ -52,11 +52,6 @@ public class FileHelper {
                 writer.print(string + "\n");
                 break;
             }
-
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -104,7 +99,6 @@ public class FileHelper {
     }
 
 
-
     public static Map<Integer, Auction> readFromFileAuction(String filepath) {
         File file = new File(filepath);
         Map<Integer, Auction> auctions = new HashMap<>();
@@ -141,7 +135,7 @@ public class FileHelper {
                     bufferedReader.close();
                     break;
                 }
-                if (Integer.valueOf(parseEntry(line)[0])>biggestNumber) {
+                if (Integer.valueOf(parseEntry(line)[0]) > biggestNumber) {
                     biggestNumber = Integer.valueOf(parseEntry(line)[0]);
                 }
 
