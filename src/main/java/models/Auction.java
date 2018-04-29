@@ -27,6 +27,10 @@ public class Auction {
         return price;
     }
 
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
     public Integer getAuctionId() {
         return auctionId;
     }
@@ -43,6 +47,14 @@ public class Auction {
         return settingUser;
     }
 
+    public String getBiddingUser() {
+        return biddingUser;
+    }
+
+    public void setBiddingUser(String biddingUser) {
+        this.biddingUser = biddingUser;
+    }
+
     public int getNumberOfBiddings() {
         return numberOfBiddings;
     }
@@ -55,4 +67,7 @@ public class Auction {
                 ", price: " + price +
                 ", highest bid: " + ((biddingUser == null) ? "none" : biddingUser);
     }
+
+
+
 }
