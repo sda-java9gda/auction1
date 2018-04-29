@@ -1,10 +1,19 @@
-import controllers.*;
-import exceptions.*;
+import controllers.AuctionController;
+import controllers.UserController;
+import exceptions.NoSuchUserException;
+import exceptions.WrongPasswordException;
 import helpers.FileHelper;
-import models.*;
-import views.*;
+import models.Auction;
+import models.TreeNode;
+import models.User;
+import views.AuctionView;
+import views.TreeNodeView;
+import views.UserView;
 
 import java.util.*;
+
+import static helpers.TreeNodeSetup.setupTree;
+import static views.OtherViews.*;
 
 public class Main {
     public enum State {
@@ -23,7 +32,7 @@ public class Main {
         final String PATHNAME_USERS = "src/main/resources/users.txt";
         final String PATHNAME_AUCTIONS = "src/main/resources/auctions.txt";
         User user = null;
-        final TreeNode<Auction> root = setupTree();
+        final TreeNode root = setupTree();
 
         Map<Integer, Auction> auctions = FileHelper.readFromFileAuction(PATHNAME_AUCTIONS);
         for (Auction auction : auctions.values()) {
@@ -31,18 +40,11 @@ public class Main {
         }
 
         System.out.println("Welcome to SDAllegro!");
-
-        Auction auctionn = null;
-
-
         while (state != State.EXIT) {
             switch (state) {
                 case INIT:
                     users = FileHelper.readFromFile(PATHNAME_USERS);
-                    System.out.println("Pick one:");
-                    System.out.println("1 - Log in");
-                    System.out.println("2 - Register");
-                    System.out.println("0 - Quit");
+                    initialMenuOptions();
 
                     String answer = sc.nextLine();
 
@@ -60,8 +62,7 @@ public class Main {
                             break;
 
                         default:
-                            System.out.println("Wrong answer!");
-                            state = State.INIT;
+                            wrongAnswer();
                             break;
                     }
                     break;
@@ -71,7 +72,6 @@ public class Main {
                     String login = sc.nextLine().trim();
                     if (uc.checkIfLoginPresent(login, users)) {
                         UserView.userExist();
-                        state = State.REGISTER;
                         break;
                     } else {
                         UserView.givePassword();
@@ -107,12 +107,7 @@ public class Main {
 
                 case LOGGED_IN: {
                     AuctionController ac = new AuctionController();
-                    System.out.println("1 - View all auctions");
-                    System.out.println("2 - Find auction");
-                    System.out.println("3 - Create an auction");
-                    System.out.println("4 - View category tree");
-                    System.out.println("5 - View all auctions in category");
-                    System.out.println("0 - Quit");
+                    loggedInOptions();
 
                     answer = sc.nextLine();
 
@@ -121,14 +116,10 @@ public class Main {
                             System.out.println();
                             AuctionView.viewAllAuctions(auctions);
                             System.out.println();
-                            state = State.LOGGED_IN;
                             break;
 
                         case ("2"):
-                            System.out.println("1 - By username");
-                            System.out.println("2 - By auction name");
-                            System.out.println("3 - By auction price");
-                            System.out.println("4 - By auction Id");
+                            findingAuctionOptions();
 
                             answer = sc.nextLine();
 
@@ -161,33 +152,34 @@ public class Main {
                                 }
 
                                 case ("4"): {
+                                    Auction auction;
                                     AuctionView.getAuctionByAuctionId();
                                     String auctionId = sc.nextLine();
-                                    auctionn = AuctionController.getAuctionById(Integer.parseInt(auctionId),auctions);
-                                    System.out.println(auctionn);
+                                    auction = AuctionController.getAuctionById(Integer.parseInt(auctionId), auctions);
+                                    System.out.println(auction);
                                     String price;
 
-                                    if (auctionn.getSettingUser().equals(user.getLogin())){
-                                        System.out.println("U cant bid your own auction");
+                                    assert user != null;
+                                    if (auction.getSettingUser().equals(user.getLogin())) {
+                                        System.out.println("U cannot bid your own auction");
                                         break;
                                     } else {
-
                                         System.out.println("To bid this auction enter your price");
                                         price = sc.nextLine();
-                                        while (Integer.valueOf(price) <= auctionn.getPrice()) {
+                                        while (Integer.valueOf(price) <= auction.getPrice()) {
                                             System.out.println("Wrong price, try again");
                                             price = sc.nextLine();
                                         }
                                     }
-                                    auctionn.setBiddingUser(user.getLogin());
-                                    auctionn.setPrice(Integer.valueOf(price));
-                                    FileHelper.overwriteAuctionById(auctionId,price, user.getLogin(),PATHNAME_AUCTIONS);
+                                    auction.setBiddingUser(user.getLogin());
+                                    auction.setPrice(Integer.valueOf(price));
+                                    FileHelper.overwriteAuctionById(auctionId, price, user.getLogin(), PATHNAME_AUCTIONS);
 
                                     break;
                                 }
 
                                 default: {
-                                    System.out.println("Wrong answer!");
+                                    wrongAnswer();
                                     break;
                                 }
                             }
@@ -203,21 +195,21 @@ public class Main {
 
                             AuctionView.givePrice();
                             int auctionPrice = Integer.valueOf(sc.nextLine());
-                            int categoryId = 0;
+                            int categoryId;
                             do {
                                 AuctionView.getSpecificCategoryId();
                                 categoryId = sc.nextInt();
                                 String ignored = sc.nextLine();
                             } while (!root.searchById(categoryId).isLeaf());
 
+                            assert user != null;
                             Auction auction =
                                     new Auction(auctionName, auctionDescription, user.getLogin(),
                                             auctionPrice, AuctionController.getAuctionNumber(), categoryId);
                             root.searchById(categoryId).addAuction(auction);
 
                             ac.addAuction(auctions, AuctionController.setAuctionNumber(), auction);
-                            FileHelper fileHelper = new FileHelper();
-                            String input = fileHelper.toLine(auction);
+                            String input = FileHelper.toLine(auction);
                             FileHelper.writeToUsersFile(input, PATHNAME_AUCTIONS);
                             state = State.LOGGED_IN;
                             break;
@@ -233,15 +225,17 @@ public class Main {
 
                         case ("5"): {
                             AuctionView.getCategoryId();
-                            int categoryId = 0;
                             try {
-                                categoryId = sc.nextInt();
+                                int categoryId = sc.nextInt();
+                                TreeNode category = root.searchById(categoryId);
+                                if (category == null) {
+                                    category = root;
+                                }
+                                AuctionView.viewAuctions(category);
                             } catch (NullPointerException | InputMismatchException ignored) {
                             }
                             String ignored = sc.nextLine();
 
-                            TreeNode<Auction> category = root.searchById(categoryId);
-                            AuctionView.viewAuctions(category);
                             System.out.println();
                             state = State.LOGGED_IN;
                             break;
@@ -252,7 +246,7 @@ public class Main {
                             break;
 
                         default:
-                            System.out.println("Wrong answer!");
+                            wrongAnswer();
                             state = State.LOGGED_IN;
                             break;
                     }
@@ -262,26 +256,5 @@ public class Main {
                     break;
             }
         }
-    }
-
-    private static TreeNode<Auction> setupTree() {
-        final TreeNode<Auction> root = new TreeNode<>(0, "Categories");
-        final TreeNode<Auction> child1 = new TreeNode<>(1, "Computers");
-        final TreeNode<Auction> child11 = new TreeNode<>(11, "Laptops");
-        final TreeNode<Auction> child111 = new TreeNode<>(111, "Lenovo");
-        final TreeNode<Auction> child112 = new TreeNode<>(112, "Asus");
-        final TreeNode<Auction> child113 = new TreeNode<>(113, "Dell");
-        final TreeNode<Auction> child12 = new TreeNode<>(12, "PC");
-        final TreeNode<Auction> child2 = new TreeNode<>(2, "Cars");
-        final TreeNode<Auction> child21 = new TreeNode<>(21, "SUVs");
-        root.addChild(child1);
-        root.addChild(child2);
-        child1.addChild(child11);
-        child11.addChild(child111);
-        child11.addChild(child112);
-        child11.addChild(child113);
-        child1.addChild(child12);
-        child2.addChild(child21);
-        return root;
     }
 }

@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TreeNode<T> {
+public class TreeNode {
     private int id;
     private String name;
-    private TreeNode<T> parent;
-    private List<TreeNode<T>> children;
+    private TreeNode parent;
+    private List<TreeNode> children;
 
     private List<Auction> auctions;
 
@@ -19,22 +19,21 @@ public class TreeNode<T> {
         children = new LinkedList<>();
     }
 
-    public List<TreeNode<T>> getChildren() {
+    public List<TreeNode> getChildren() {
         return children;
     }
 
-    public TreeNode<T> getParent() {
+    private TreeNode getParent() {
         return parent;
     }
 
-    public void setParent(TreeNode<T> parent) {
+    public void setParent(TreeNode parent) {
         this.parent = parent;
     }
 
-    public TreeNode<T> addChild(TreeNode<T> child) {
+    public void addChild(TreeNode child) {
         child.setParent(this);
         this.children.add(child);
-        return child;
     }
 
     public boolean isRoot() {
@@ -43,10 +42,6 @@ public class TreeNode<T> {
 
     public boolean isLeaf() {
         return children.isEmpty();
-    }
-
-    public void deleteChild(TreeNode<T> child) {
-        child.getParent().getChildren().clear();
     }
 
     public void addAuction(Auction auction) {
@@ -65,11 +60,11 @@ public class TreeNode<T> {
         return auctions;
     }
 
-    public TreeNode<T> searchById(int categoryID) {
+    public TreeNode searchById(int categoryID) {
         if (categoryID == this.id) {
             return this;
         } else {
-            for (TreeNode<T> child : this.children) {
+            for (TreeNode child : this.children) {
                 if (child.searchById(categoryID) != null) {
                     return child.searchById(categoryID);
                 }

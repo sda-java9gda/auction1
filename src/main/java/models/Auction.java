@@ -5,7 +5,6 @@ public class Auction {
     private String description;
     private String settingUser;
     private String biddingUser;
-    private int numberOfBiddings = 0;
     private int price;
     private Integer auctionId;
     private Integer categoryId;
@@ -55,15 +54,11 @@ public class Auction {
         this.biddingUser = biddingUser;
     }
 
-    public int getNumberOfBiddings() {
-        return numberOfBiddings;
-    }
-
     @Override
     public String toString() {
         return name +
                 ", " + description +
-                ", settingUser: " + settingUser +
+                ", owner: " + settingUser +
                 ", price: " + price +
                 ", highest bid: " + ((biddingUser == null) ? "none" : biddingUser);
     }
