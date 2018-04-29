@@ -6,7 +6,6 @@ public class Auction {
     private String settingUser;
     private String biddingUser;
     private int numberOfBiddings = 0;
-    private String userLogin;
     private int price;
     private Integer auctionId;
     private Integer categoryId;
@@ -28,71 +27,32 @@ public class Auction {
         return price;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-
     public Integer getAuctionId() {
         return auctionId;
     }
 
-    public String getUserLogin() {
-        return userLogin;
-    }
-
-    public void setUserLogin(String userLogin) {
-        this.userLogin = userLogin;
-    }
-
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getSettingUser() {
         return settingUser;
-    }
-
-    public void setSettingUser(String settingUser) {
-        this.settingUser = settingUser;
-    }
-
-    public String getBiddingUser() {
-        return biddingUser;
-    }
-
-    public void setBiddingUser(String biddingUser) {
-        this.biddingUser = biddingUser;
     }
 
     public int getNumberOfBiddings() {
         return numberOfBiddings;
     }
 
-    public void setNumberOfBiddings(int numberOfBiddings) {
-        this.numberOfBiddings = numberOfBiddings;
-    }
-
     @Override
     public String toString() {
-        return  "Auction: " + name + '\'' +
-                ", description='" + description + '\'' +
-                ", settingUser='" + settingUser + '\'' +
-                ", price=" + price +
-                ", auctionId=" + auctionId +
-                '}';
+        return name +
+                ", " + description +
+                ", settingUser: " + settingUser +
+                ", price: " + price +
+                ", highest bid: " + ((biddingUser == null) ? "none" : biddingUser);
     }
 }

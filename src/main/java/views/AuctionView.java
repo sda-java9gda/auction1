@@ -74,6 +74,11 @@ public class AuctionView {
     }
 
     public static void getCategoryId() {
-        System.out.println("Input category Id. It must be specific.");
+        System.out.println("Input category Id:");
     }
+
+    public static void getSpecificCategoryId() {
+        System.out.println("Input category Id. It has to be specific.");
+    }
+
 }
