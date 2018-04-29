@@ -1,52 +1,62 @@
 package controllers;
 
+import helpers.FileHelper;
 import models.Auction;
-import models.User;
-import views.AuctionView;
+import helpers.AuctionByPriceComparator;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class AuctionController {
-    private Auction auction;
-    private User user;
-    private Scanner sc = new Scanner(System.in);
-    private static Map<Integer,Auction> auctionMap = new HashMap<>();
+    private static final String PATHNAME = "src/main/resources/auctions.txt";
+    private static Map<Integer, Auction> auctionMap = new HashMap<>();
+    private static int auctionNumber = FileHelper.readBiggestAuctionNumber(PATHNAME);
+    private FileHelper fileHelper = new FileHelper();
 
-    public void addAuction(){
-        auction = new Auction();
-        setAuctionName();
-        setAuctionDescription();
-        auction.setSettingUser(this.user);
-
-        auctionMap.put(auction.getId(),auction);
-        Integer tmp =auction.getId();
-        auction.setId(tmp++);
+    public synchronized static int getAuctionNumber() {
+        return auctionNumber;
     }
 
-    private void setAuctionDescription() {
-        String name = sc.nextLine();
-        AuctionView.giveAuctionDescription();
-        auction.setDescription(name);
+    public synchronized static int setAuctionNumber() {
+        auctionNumber++;
+        return auctionNumber;
     }
 
-    private void setAuctionName() {
-        String name = sc.nextLine();
-        AuctionView.giveAuctionName();
-        auction.setName(name);
+
+    public void addAuction(Map<Integer, Auction> auctions, Integer number, Auction auction) {
+        auctions.put(number, auction);
     }
 
     public static Map<Integer, Auction> getAuctionMap() {
         return auctionMap;
     }
 
-    public boolean isFinished(Auction auction){
+    public boolean isFinished(Auction auction) {
         return (auction.getNumberOfBiddings() == 3);
     }
 
-    public User getWinner(Auction auction){
-        return auction.getBiddingUser();
+    public static List<Auction> getAuctionsByUser(String user, Map<Integer, Auction> auctions) {
+        return auctions.values().stream().filter(x -> x.getSettingUser()
+                .equals(user)).collect(Collectors.toList());
+    }
+
+    public static List<Auction> getAuctionsByAuctionName(String name, Map<Integer, Auction> auctions) {
+        return auctions.values().stream().filter(x -> x.getName()
+                .equals(name)).collect(Collectors.toList());
+    }
+
+    public static List<Auction> getAuctionsByPrice(String beginningPrice, String endPrice, Map<Integer, Auction> auctions) {
+        return auctions.values().stream()
+                .filter(x -> x.getPrice() >= Integer.valueOf(beginningPrice)
+                        && x.getPrice()<=Integer.valueOf(endPrice))
+                .sorted(new AuctionByPriceComparator())
+                .collect(Collectors.toList());
+    }
+
+    public static Auction getAuctionById(Integer auctionId, Map<Integer, Auction> auctions){
+        return auctions.get(auctionId-999);
     }
 }
 

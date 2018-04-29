@@ -1,4 +1,4 @@
 package exceptions;
 
-public class NoSuchUserException extends Exception {
+public class NoSuchUserException extends RuntimeException {
 }

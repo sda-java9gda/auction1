@@ -1,29 +1,46 @@
 package models;
 
+import controllers.AuctionController;
+
 public class Auction {
     private String name;
     private String description;
-    private User settingUser;
-    private User biddingUser;
+    private String settingUser;
+    private String biddingUser;
     private int numberOfBiddings = 0;
-    private Integer id = 1;
+    private String userLogin;
+    private int price;
+    private Integer auctionId;
 
-    public Integer getId() {
-        return id;
+    public int getPrice() {
+        return price;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setPrice(int price) {
+        this.price = price;
     }
 
-    public Auction() {
-    }
 
-    public Auction(String name, String description, User settingUser) {
+    public Auction(String name, String description, String settingUser, int price, Integer auctionId) {
         this.name = name;
         this.description = description;
         this.settingUser = settingUser;
+        this.price = price;
+        this.auctionId = auctionId + 1000;
     }
+
+    public Integer getAuctionId() {
+        return auctionId;
+    }
+
+    public String getUserLogin() {
+        return userLogin;
+    }
+
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
+    }
+
 
     public String getName() {
         return name;
@@ -41,19 +58,19 @@ public class Auction {
         this.description = description;
     }
 
-    public User getSettingUser() {
+    public String getSettingUser() {
         return settingUser;
     }
 
-    public void setSettingUser(User settingUser) {
+    public void setSettingUser(String settingUser) {
         this.settingUser = settingUser;
     }
 
-    public User getBiddingUser() {
+    public String getBiddingUser() {
         return biddingUser;
     }
 
-    public void setBiddingUser(User biddingUser) {
+    public void setBiddingUser(String biddingUser) {
         this.biddingUser = biddingUser;
     }
 
@@ -67,13 +84,11 @@ public class Auction {
 
     @Override
     public String toString() {
-        return "Auction{" +
-                "name='" + name + '\'' +
+        return  "Auction: " + name + '\'' +
                 ", description='" + description + '\'' +
-                ", settingUser=" + settingUser +
-                ", biddingUser=" + biddingUser +
-                ", numberOfBiddings=" + numberOfBiddings +
-                ", id=" + id +
+                ", settingUser='" + settingUser + '\'' +
+                ", price=" + price +
+                ", auctionId=" + auctionId +
                 '}';
     }
 }

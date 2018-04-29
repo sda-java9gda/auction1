@@ -4,40 +4,28 @@ import exceptions.NoSuchUserException;
 import exceptions.WrongPasswordException;
 import models.User;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 public class UserController {
-    private User user;
-    private FileController fc = new FileController();
-    Scanner sc = new Scanner(System.in);
-    private static final String PATHNAME = "src/main/resources/users.txt";
-    private Map<String, User> users = new HashMap<>();
-    public Map<String, User> getUsers() {
-        return users;
-    }
-
-    public void addUser(String login, String password) {
-        user = new User(login, password);
-        String input = fc.toLine(user);
-        FileController.writeToUsersFile(input, PATHNAME);
-    }
 
     public boolean checkIfLoginPresent(String string, Map<String, User> users) {
-        for (String login : users.keySet()) {
-            if (login.equals(string)) {
-                return true;
-            }
-        }
-        return false;
+        return users.containsKey(string);
     }
 
     public boolean checkIfLoginAndPasswordAreConnected(String login, String password, Map<String, User> users) {
-        return users.get(login).getPassword().equals(password);
+        boolean isConnected = false;
+        try {
+            isConnected = users.get(login).getPassword().equals(password);
+        } catch (NullPointerException npe) {
+            System.out.println("Login is not present.");
+        }
+
+        return isConnected;
     }
 
     public void verify(String login, String password, Map<String, User> users) throws NoSuchUserException, WrongPasswordException {
+
+        //zmienic na jeden wyjatek, zeby nie bylo widac, ze konto istnieje
        if(!checkIfLoginPresent(login,users)){
            throw new NoSuchUserException();
        }

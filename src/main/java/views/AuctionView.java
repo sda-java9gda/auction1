@@ -1,6 +1,5 @@
 package views;
 
-import controllers.AuctionController;
 import models.Auction;
 
 import java.util.Arrays;
@@ -17,14 +16,43 @@ public class AuctionView {
         System.out.println("Enter auction details.");
     }
 
-    public static void viewAllAuctions() {
-        Map<Integer, Auction> auctions = AuctionController.getAuctionMap();
-        for (Auction auction : auctions.values()) {
-            System.out.println(auction);
-            System.out.println();
+    public static void viewAllAuctions(Map<Integer,Auction> auctions) {
+        for (Integer key : auctions.keySet()) {
+            System.out.println(key + " " + auctions.get(key));
         }
     }
+
     public static void getAuction(List<String> auction) {
         System.out.println(Arrays.asList(auction));
     }
+
+    public static void getAuctionByUser(){
+        System.out.println("Entry username");
+    }
+
+    public static void getAuctionByAuctionName(){
+        System.out.println("Entry Auction name");
+    }
+
+    public static void getAuctionByBeginningPrice(){
+        System.out.println("Entry auction beginning price");
+    }
+    public static void getAuctionByEndingPrice(){
+        System.out.println("Entry auction ending price");
+    }
+
+    public static void givePrice() {
+        System.out.println("Auction price.");
+    }
+
+    public static void getAuctionByAuctionId() {
+        System.out.println("Give auction ID");
+    }
+
+    public static void printAuctionsBy(List<Auction> auctions){
+        for (Auction auction: auctions) {
+            System.out.println(auction);
+        }
+    }
+
 }
