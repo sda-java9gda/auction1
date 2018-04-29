@@ -80,4 +80,5 @@ public class FileHelperTest {
 
         assertThat(actual).isEqualTo(expected);
     }
+
 }
