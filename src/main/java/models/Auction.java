@@ -1,7 +1,5 @@
 package models;
 
-import controllers.AuctionController;
-
 public class Auction {
     private String name;
     private String description;
@@ -11,6 +9,20 @@ public class Auction {
     private String userLogin;
     private int price;
     private Integer auctionId;
+    private Integer categoryId;
+
+    public Auction(String name, String description, String settingUser, int price, Integer auctionId, Integer categoryID) {
+        this.name = name;
+        this.description = description;
+        this.settingUser = settingUser;
+        this.price = price;
+        this.auctionId = auctionId + 1000;
+        this.categoryId = categoryID;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
 
     public int getPrice() {
         return price;
@@ -20,14 +32,6 @@ public class Auction {
         this.price = price;
     }
 
-
-    public Auction(String name, String description, String settingUser, int price, Integer auctionId) {
-        this.name = name;
-        this.description = description;
-        this.settingUser = settingUser;
-        this.price = price;
-        this.auctionId = auctionId + 1000;
-    }
 
     public Integer getAuctionId() {
         return auctionId;
