@@ -5,7 +5,9 @@ import models.Auction;
 import models.User;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FileHelper {
@@ -20,6 +22,46 @@ public class FileHelper {
         }
     }
 
+    public static void overwriteAuctionById(String id,String price, String biddingUser,String filePath) {
+        File file = new File(filePath);
+        try (PrintWriter writer = new PrintWriter(new FileOutputStream(file, true))){
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            String line;
+            List<String> list = new ArrayList<>();
+            while (true) {
+
+                line = bufferedReader.readLine();
+                if (line == null) {
+                    bufferedReader.close();
+                    break;
+                }
+
+                for (String lines: line.split(SEPARATOR)) {
+                    if (lines.contains(id)){
+                        list.add(line);
+                    }
+                }
+                String auctionString = list.get(list.size()-1);
+                Auction auction = new Auction(parseEntry(auctionString)[1], parseEntry(auctionString)[2],
+                        parseEntry(auctionString)[3], Integer.valueOf(parseEntry(auctionString)[5]),
+                        Integer.valueOf(parseEntry(auctionString)[6]) - 1000, Integer.valueOf(parseEntry(auctionString)[7]));
+                auction.setPrice(Integer.valueOf(price));
+                auction.setBiddingUser(biddingUser);
+                AuctionController.setAuctionNumber(Integer.valueOf(parseEntry(auctionString)[0]));
+                String string = toLine(auction);
+                writer.print(string + "\n");
+                break;
+            }
+
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public String toLine(User user) {
         String result = "";
         result += user.getLogin() + SEPARATOR;
@@ -27,14 +69,16 @@ public class FileHelper {
         return result;
     }
 
-    public String toLine(Auction auction) {
+    public static String toLine(Auction auction) {
         String result = "";
         result += AuctionController.getAuctionNumber() + SEPARATOR;
         result += auction.getName() + SEPARATOR;
         result += auction.getDescription() + SEPARATOR;
         result += auction.getSettingUser() + SEPARATOR;
+        result += auction.getBiddingUser() + SEPARATOR;
         result += auction.getPrice() + SEPARATOR;
-        result += auction.getAuctionId();
+        result += auction.getAuctionId() + SEPARATOR;
+        result += auction.getCategoryId();
         return result;
     }
 
@@ -59,6 +103,8 @@ public class FileHelper {
         return users;
     }
 
+
+
     public static Map<Integer, Auction> readFromFileAuction(String filepath) {
         File file = new File(filepath);
         Map<Integer, Auction> auctions = new HashMap<>();
@@ -72,8 +118,10 @@ public class FileHelper {
                     break;
                 }
                 Auction auction = new Auction(parseEntry(line)[1], parseEntry(line)[2],
-                        parseEntry(line)[3],Integer.valueOf(parseEntry(line)[4]),Integer.valueOf(parseEntry(line)[5])-1000);
-                auctions.put(Integer.parseInt(parseEntry(line)[0]),auction);
+                        parseEntry(line)[3], Integer.valueOf(parseEntry(line)[5]),
+                        Integer.valueOf(parseEntry(line)[6]) - 1000, Integer.valueOf(parseEntry(line)[7]));
+                auction.setBiddingUser(parseEntry(line)[4]);
+                auctions.put(Integer.parseInt(parseEntry(line)[0]), auction);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -93,7 +141,9 @@ public class FileHelper {
                     bufferedReader.close();
                     break;
                 }
-                biggestNumber = Integer.valueOf(parseEntry(line)[0]);
+                if (Integer.valueOf(parseEntry(line)[0])>biggestNumber) {
+                    biggestNumber = Integer.valueOf(parseEntry(line)[0]);
+                }
 
             }
         } catch (IOException e) {

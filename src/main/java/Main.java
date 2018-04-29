@@ -1,17 +1,10 @@
-import controllers.AuctionController;
-import controllers.UserController;
-import exceptions.NoSuchUserException;
-import exceptions.WrongPasswordException;
+import controllers.*;
+import exceptions.*;
 import helpers.FileHelper;
-import models.Auction;
-import models.User;
-import views.AuctionView;
-import views.UserView;
+import models.*;
+import views.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public enum State {
@@ -25,13 +18,22 @@ public class Main {
     public static void main(String[] args) {
         State state = State.INIT;
         Scanner sc = new Scanner(System.in);
-        System.out.println("Welcome to SDAllegro!");
         UserController uc = new UserController();
         Map<String, User> users = new HashMap<>();
-        Map<Integer, Auction> auctions = new HashMap<>();
         final String PATHNAME_USERS = "src/main/resources/users.txt";
         final String PATHNAME_AUCTIONS = "src/main/resources/auctions.txt";
         User user = null;
+        final TreeNode<Auction> root = setupTree();
+
+        Map<Integer, Auction> auctions = FileHelper.readFromFileAuction(PATHNAME_AUCTIONS);
+        for (Auction auction : auctions.values()) {
+            root.searchById(auction.getCategoryId()).addAuction(auction);
+        }
+
+        System.out.println("Welcome to SDAllegro!");
+
+        Auction auctionn = null;
+
 
         while (state != State.EXIT) {
             switch (state) {
@@ -104,23 +106,25 @@ public class Main {
                 }
 
                 case LOGGED_IN: {
-                    auctions = FileHelper.readFromFileAuction(PATHNAME_AUCTIONS);
                     AuctionController ac = new AuctionController();
                     System.out.println("1 - View all auctions");
                     System.out.println("2 - Find auction");
                     System.out.println("3 - Create an auction");
+                    System.out.println("4 - View category tree");
+                    System.out.println("5 - View all auctions in category");
                     System.out.println("0 - Quit");
 
                     answer = sc.nextLine();
 
                     switch (answer) {
                         case ("1"):
+                            System.out.println();
                             AuctionView.viewAllAuctions(auctions);
+                            System.out.println();
                             state = State.LOGGED_IN;
                             break;
 
                         case ("2"):
-
                             System.out.println("1 - By username");
                             System.out.println("2 - By auction name");
                             System.out.println("3 - By auction price");
@@ -144,22 +148,42 @@ public class Main {
                                     AuctionView.printAuctionsBy(auctionsListByAuctionName);
                                     break;
                                 }
+
                                 case ("3"): {
                                     AuctionView.getAuctionByBeginningPrice();
                                     String beginningPrice = sc.nextLine();
                                     AuctionView.getAuctionByEndingPrice();
                                     String endingPrice = sc.nextLine();
                                     List<Auction> auctionsListByPrice =
-                                            AuctionController.getAuctionsByPrice(beginningPrice,endingPrice, auctions);
+                                            AuctionController.getAuctionsByPrice(beginningPrice, endingPrice, auctions);
                                     AuctionView.printAuctionsBy(auctionsListByPrice);
                                     break;
                                 }
-                                case  ("4"): {
+
+                                case ("4"): {
                                     AuctionView.getAuctionByAuctionId();
                                     String auctionId = sc.nextLine();
-                                    System.out.println(AuctionController.getAuctionById(Integer.parseInt(auctionId),auctions));
-                                    break;
+                                    auctionn = AuctionController.getAuctionById(Integer.parseInt(auctionId),auctions);
+                                    System.out.println(auctionn);
+                                    String price;
 
+                                    if (auctionn.getSettingUser().equals(user.getLogin())){
+                                        System.out.println("U cant bid your own auction");
+                                        break;
+                                    } else {
+
+                                        System.out.println("To bid this auction enter your price");
+                                        price = sc.nextLine();
+                                        while (Integer.valueOf(price) <= auctionn.getPrice()) {
+                                            System.out.println("Wrong price, try again");
+                                            price = sc.nextLine();
+                                        }
+                                    }
+                                    auctionn.setBiddingUser(user.getLogin());
+                                    auctionn.setPrice(Integer.valueOf(price));
+                                    FileHelper.overwriteAuctionById(auctionId,price, user.getLogin(),PATHNAME_AUCTIONS);
+
+                                    break;
                                 }
 
                                 default: {
@@ -170,7 +194,7 @@ public class Main {
                             state = State.LOGGED_IN;
                             break;
 
-                        case ("3"):
+                        case ("3"): {
                             AuctionView.giveAuctionName();
                             String auctionName = sc.nextLine();
 
@@ -179,17 +203,49 @@ public class Main {
 
                             AuctionView.givePrice();
                             int auctionPrice = Integer.valueOf(sc.nextLine());
+                            int categoryId = 0;
+                            do {
+                                AuctionView.getSpecificCategoryId();
+                                categoryId = sc.nextInt();
+                                String ignored = sc.nextLine();
+                            } while (!root.searchById(categoryId).isLeaf());
 
                             Auction auction =
                                     new Auction(auctionName, auctionDescription, user.getLogin(),
-                                            auctionPrice,AuctionController.getAuctionNumber());
+                                            auctionPrice, AuctionController.getAuctionNumber(), categoryId);
+                            root.searchById(categoryId).addAuction(auction);
 
-                            ac.addAuction(auctions,AuctionController.setAuctionNumber(), auction);
+                            ac.addAuction(auctions, AuctionController.setAuctionNumber(), auction);
                             FileHelper fileHelper = new FileHelper();
                             String input = fileHelper.toLine(auction);
                             FileHelper.writeToUsersFile(input, PATHNAME_AUCTIONS);
                             state = State.LOGGED_IN;
                             break;
+                        }
+
+                        case ("4"): {
+                            TreeNodeView tnv = new TreeNodeView();
+                            tnv.viewCategories(root);
+                            System.out.println();
+                            state = State.LOGGED_IN;
+                            break;
+                        }
+
+                        case ("5"): {
+                            AuctionView.getCategoryId();
+                            int categoryId = 0;
+                            try {
+                                categoryId = sc.nextInt();
+                            } catch (NullPointerException | InputMismatchException ignored) {
+                            }
+                            String ignored = sc.nextLine();
+
+                            TreeNode<Auction> category = root.searchById(categoryId);
+                            AuctionView.viewAuctions(category);
+                            System.out.println();
+                            state = State.LOGGED_IN;
+                            break;
+                        }
 
                         case ("0"):
                             state = State.EXIT;
@@ -202,7 +258,30 @@ public class Main {
                     }
                     break;
                 }
+                case EXIT:
+                    break;
             }
         }
+    }
+
+    private static TreeNode<Auction> setupTree() {
+        final TreeNode<Auction> root = new TreeNode<>(0, "Categories");
+        final TreeNode<Auction> child1 = new TreeNode<>(1, "Computers");
+        final TreeNode<Auction> child11 = new TreeNode<>(11, "Laptops");
+        final TreeNode<Auction> child111 = new TreeNode<>(111, "Lenovo");
+        final TreeNode<Auction> child112 = new TreeNode<>(112, "Asus");
+        final TreeNode<Auction> child113 = new TreeNode<>(113, "Dell");
+        final TreeNode<Auction> child12 = new TreeNode<>(12, "PC");
+        final TreeNode<Auction> child2 = new TreeNode<>(2, "Cars");
+        final TreeNode<Auction> child21 = new TreeNode<>(21, "SUVs");
+        root.addChild(child1);
+        root.addChild(child2);
+        child1.addChild(child11);
+        child11.addChild(child111);
+        child11.addChild(child112);
+        child11.addChild(child113);
+        child1.addChild(child12);
+        child2.addChild(child21);
+        return root;
     }
 }
